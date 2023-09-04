@@ -13,6 +13,7 @@
 		26D083DB2AA680DC005B44C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26D083D92AA680DC005B44C4 /* Main.storyboard */; };
 		26D083DD2AA680DE005B44C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D083DC2AA680DE005B44C4 /* Assets.xcassets */; };
 		26D083E02AA680DE005B44C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26D083DE2AA680DE005B44C4 /* LaunchScreen.storyboard */; };
+		26D083E92AA6965C005B44C4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 26D083E82AA6965C005B44C4 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26D083E92AA6965C005B44C4 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,9 @@
 			dependencies = (
 			);
 			name = CustomFontsTest;
+			packageProductDependencies = (
+				26D083E82AA6965C005B44C4 /* SnapKit */,
+			);
 			productName = CustomFontsTest;
 			productReference = 26D083D02AA680DC005B44C4 /* CustomFontsTest.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +116,9 @@
 				Base,
 			);
 			mainGroup = 26D083C72AA680DC005B44C4;
+			packageReferences = (
+				26D083E72AA6965C005B44C4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 26D083D12AA680DC005B44C4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -295,6 +303,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -323,6 +332,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,6 +368,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		26D083E72AA6965C005B44C4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		26D083E82AA6965C005B44C4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 26D083E72AA6965C005B44C4 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 26D083C82AA680DC005B44C4 /* Project object */;
 }
