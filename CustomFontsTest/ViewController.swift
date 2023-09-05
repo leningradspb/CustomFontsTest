@@ -11,20 +11,23 @@ import SnapKit
 class ViewController: UIViewController {
 
 //    @IBOutlet weak var textField: UITextField!
-    private let phoneField = MaskedTextField()
-    
+//    private let phoneField = MaskedTextField()
+    private let phoneField = UITextField()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        textField.inputView = NumericKeyboard(target: textField)
-        phoneField.formatMask = "XXX XXX XX XX"
-        phoneField.placeholder = "000 000 00 00"
-        phoneField.textField.inputView = NumericKeyboard(target: phoneField.textField)
+        view.backgroundColor = .white
+//        phoneField. = .gray
+//        phoneField.formatMask = "XXX XXX XX XX"
+        phoneField.placeholder = "Type text"
+//        phoneField.inputViewController = KeyboardViewController()
+//        phoneField.textField.inputView =  NumericKeyboard(target: phoneField.textField)
         
         view.addSubview(phoneField)
         
         phoneField.snp.makeConstraints {
-            $0.height.equalTo(60)
+//            $0.height.equalTo(60)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
@@ -34,35 +37,35 @@ class ViewController: UIViewController {
 
 }
 
-class KeyboardViewController: UIInputViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let button = createButton(title: "A")
-        self.view.addSubview(button)
-    }
-    
-    func createButton(title: String) -> UIButton {
-        let button = UIButton(type: .system)
-        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
-        button.setTitle(title, for: .normal)
-        button.sizeToFit()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont(name: "Montague.ttf", size: 15)
-        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
-        
-        return button
-    }
-    
-    @objc func didTapButton(sender: AnyObject) {
-        let button = sender as! UIButton
-        button.titleLabel?.font = UIFont(name: "Montague.ttf", size: 15)
-        let title = button.title(for: .normal)
-        textDocumentProxy.insertText(title!)
-    }
-}
+//class KeyboardViewController: UIInputViewController {
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        let button = createButton(title: "A")
+//        self.view.addSubview(button)
+//    }
+//    
+//    func createButton(title: String) -> UIButton {
+//        let button = UIButton(type: .system)
+//        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
+//        button.setTitle(title, for: .normal)
+//        button.sizeToFit()
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.titleLabel?.font = .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
+//        button.backgroundColor = .black  //UIColor(white: 1.0, alpha: 1.0)
+//        button.setTitleColor(UIColor.darkGray, for: .normal)
+//        button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
+//        
+//        return button
+//    }
+//    
+//    @objc func didTapButton(sender: AnyObject) {
+//        let button = sender as! UIButton
+//        button.titleLabel?.font =  .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
+//        let title = button.title(for: .normal)
+//        textDocumentProxy.insertText(title!)
+//    }
+//}
 
     //
     //  NumericKeyboard.swift
@@ -182,6 +185,12 @@ class KeyboardViewController: UIInputViewController {
             
             if let range = target.selectedTextRange
             {
+//                let button = sender as! UIButton
+                sender.titleLabel?.font = .systemFont(ofSize: 50, weight: .bold)
+                sender.title(for: .normal)
+                
+                target.font = .systemFont(ofSize: 20, weight: .bold)
+//                textDocumentProxy.insertText(title!)
                 replaceTextAtTextRange(range, withString: text)
             }
         }
