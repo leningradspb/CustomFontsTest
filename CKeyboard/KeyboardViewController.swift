@@ -8,12 +8,42 @@
 import UIKit
 
 class KeyboardViewController: UIInputViewController {
+    let stack = UIStackView()
     
+//    override func updateViewConstraints() {
+//        super.updateViewConstraints()
+//        // Add custom view sizing constraints here
+//        stack.frame.size = view.frame.size
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        let button = createButton(title: "\u{1D7A2}" )
-        self.view.addSubview(button)
-        self.textDocumentProxy.setMarkedText("12", selectedRange: NSRange(location: 0, length: 2))
+        
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = 4
+        let button = createButton(title: "\u{1D54F}")
+        let button1 = createButton(title: "\u{1D550}")
+        let button2 = createButton(title: "\u{1D54C}")
+        stack.addArrangedSubview(button)
+        stack.addArrangedSubview(button1)
+        stack.addArrangedSubview(button2)
+        
+//        view.addSubview(button)
+//        view.addSubview(button1)
+        self.view.addSubview(stack)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        
+        stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        
+//        stack.snp.makeConstraints {
+//            $0.top.equalToSuperview()
+//            $0.leading.equalToSuperview()
+//            $0.trailing.equalToSuperview()
+//            $0.height.equalTo(25)
+//        }
+//        self.textDocumentProxy.setMarkedText("12", selectedRange: NSRange(location: 0, length: 2))
     }
     
     override func textWillChange(_ textInput: UITextInput?) {
@@ -34,7 +64,7 @@ class KeyboardViewController: UIInputViewController {
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
-        button.backgroundColor = .black  //UIColor(white: 1.0, alpha: 1.0)
+        button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
         button.setTitleColor(UIColor.darkGray, for: .normal)
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         
@@ -46,6 +76,7 @@ class KeyboardViewController: UIInputViewController {
         button.titleLabel?.font =  .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
         button.titleLabel?.textColor = .blue
         let title = button.title(for: .normal)
+        // "\u{1D63C}"
         let utf = "\u{1D63C}" //"哈哈123abc"  // "\u{00e2}"
         textDocumentProxy.insertText(title!)
 //        textDocumentProxy.insertText("🅷🅾🆆 🆆🅴🅻🅻 🅳🅾🅴🆂 🆃🅷🅸🆂 🆆🅾🆁🅺?")
