@@ -9,6 +9,7 @@ import UIKit
 
 class KeyboardViewController: UIInputViewController {
     let stack = UIStackView()
+    private let imageView = UIImageView(image: UIImage(named: "grd"))
     
 //    override func updateViewConstraints() {
 //        super.updateViewConstraints()
@@ -17,6 +18,17 @@ class KeyboardViewController: UIInputViewController {
 //    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(imageView)
+//        imageView.setImage(UIImage(named: "grd"), for: .normal)
+//        view.backgroundColor = .red
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         stack.axis = .horizontal
         stack.distribution = .fillEqually
@@ -27,23 +39,15 @@ class KeyboardViewController: UIInputViewController {
         stack.addArrangedSubview(button)
         stack.addArrangedSubview(button1)
         stack.addArrangedSubview(button2)
-        
-//        view.addSubview(button)
-//        view.addSubview(button1)
+//
+//
         self.view.addSubview(stack)
         stack.translatesAutoresizingMaskIntoConstraints = false
-        
+
         stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
-//        stack.snp.makeConstraints {
-//            $0.top.equalToSuperview()
-//            $0.leading.equalToSuperview()
-//            $0.trailing.equalToSuperview()
-//            $0.height.equalTo(25)
-//        }
-//        self.textDocumentProxy.setMarkedText("12", selectedRange: NSRange(location: 0, length: 2))
     }
     
     override func textWillChange(_ textInput: UITextInput?) {
