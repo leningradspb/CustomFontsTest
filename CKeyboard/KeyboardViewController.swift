@@ -8,8 +8,25 @@
 import UIKit
 
 class KeyboardViewController: UIInputViewController {
+    // отдельные стеки
+    // кастомные размеры для разных клавиш
+    // вью с выбором букв
+    let selectFontsView = UIView()
+    var selectedFont: Fonts = .normal
     let stack = UIStackView()
     private let imageView = UIImageView(image: UIImage(named: "grd"))
+    let letterKeys = [
+        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
+        ["⬆️", "z", "x", "c", "v", "b", "n", "m", "⌫"],
+        ["123", "􀆪", "📝", "space", "↩"]
+    ]
+    
+    let customLetters = [
+        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
+        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
+        ["123", "􀆪", "📝", "space", "↩"]
+    ]
     
 //    override func updateViewConstraints() {
 //        super.updateViewConstraints()
@@ -19,35 +36,49 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(imageView)
+//        view.addSubview(imageView)
 //        imageView.setImage(UIImage(named: "grd"), for: .normal)
 //        view.backgroundColor = .red
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
-        stack.axis = .horizontal
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+//        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+//        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+//        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+//        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+//
+        stack.axis = .vertical
         stack.distribution = .fillEqually
-        stack.spacing = 4
-        let button = createButton(title: "\u{1D54F}")
-        let button1 = createButton(title: "\u{1D550}")
-        let button2 = createButton(title: "\u{1D54C}")
-        stack.addArrangedSubview(button)
-        stack.addArrangedSubview(button1)
-        stack.addArrangedSubview(button2)
+        stack.spacing = 8
+//        let button = createButton(title: "\u{1066}")
+//        let button1 = createButton(title: "\u{1D550}")
+//        let button2 = createButton(title: "\u{1D54C}")
+//        stack.addArrangedSubview(button)
+//        stack.addArrangedSubview(button1)
+//        stack.addArrangedSubview(button2)
+        
 //
 //
+        view.addSubview(selectFontsView)
         self.view.addSubview(stack)
+        selectFontsView.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        stack.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        selectFontsView.backgroundColor = .green
+        selectFontsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        selectFontsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        selectFontsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        selectFontsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        stack.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
         stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
+      
+        updateKeyboard()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        selectFontsView.addGestureRecognizer(tap)
     }
     
     override func textWillChange(_ textInput: UITextInput?) {
@@ -61,15 +92,76 @@ class KeyboardViewController: UIInputViewController {
         
     }
     
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        if selectedFont == .normal {
+            selectedFont = .custom
+        } else {
+            selectedFont = .normal
+        }
+        updateKeyboard()
+    }
+    
+    private func updateKeyboard() {
+        stack.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        
+        switch selectedFont {
+        case .normal:
+            normalLetters()
+        case .custom:
+            loadCustomLetters()
+        }
+        
+        
+    }
+    
+    private func normalLetters() {
+        for array in  letterKeys {
+            let s = UIStackView()
+            s.axis = .horizontal
+            s.distribution = .fillEqually
+            s.alignment = .center
+            s.spacing = 4
+            s.translatesAutoresizingMaskIntoConstraints = false
+            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            stack.addArrangedSubview(s)
+            
+            array.forEach {
+                let button = createButton(title: $0)
+                s.addArrangedSubview(button)
+            }
+        }
+    }
+    
+    private func loadCustomLetters() {
+        for array in customLetters {
+            let s = UIStackView()
+            s.axis = .horizontal
+            s.distribution = .fillEqually
+            s.alignment = .center
+            s.spacing = 4
+            s.translatesAutoresizingMaskIntoConstraints = false
+            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            stack.addArrangedSubview(s)
+            
+            array.forEach {
+                let button = createButton(title: $0)
+                s.addArrangedSubview(button)
+            }
+        }
+    }
+    
     func createButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
-        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
+//        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
         button.setTitle(title, for: .normal)
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium) //UIFont(name: "Montague.ttf", size: 15)
         button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
-        button.setTitleColor(UIColor.darkGray, for: .normal)
+        button.layer.cornerRadius = 4
+        button.setTitleColor(UIColor.black, for: .normal)
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         
         return button
@@ -77,8 +169,8 @@ class KeyboardViewController: UIInputViewController {
     
     @objc func didTapButton(sender: AnyObject) {
         let button = sender as! UIButton
-        button.titleLabel?.font =  .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
-        button.titleLabel?.textColor = .blue
+//        button.titleLabel?.font =  .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
+//        button.titleLabel?.textColor = .blue
         let title = button.title(for: .normal)
         // "\u{1D63C}"
         let utf = "\u{1D63C}" //"哈哈123abc"  // "\u{00e2}"
@@ -130,4 +222,8 @@ extension String {
         let text = String(data: messageData!, encoding: .utf8) ?? ""
         return text
     }
+}
+
+enum Fonts {
+    case normal, custom
 }
