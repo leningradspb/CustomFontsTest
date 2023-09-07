@@ -28,6 +28,11 @@ class KeyboardViewController: UIInputViewController {
         ["123", "􀆪", "📝", "space", "↩"]
     ]
     
+    let rectangleFillLetters = [
+        ["\u{1F180}", "\u{1F186}", "\u{1F174}", "\u{1F181}","\u{1F183}", "\u{1F188}", "\u{1F184}", "\u{1F178}", "\u{1F17E}", "\u{1F17F}"],
+        ["\u{1F170}", "\u{1F171}", "\u{1F172}", "\u{1F173}", "\u{1F174}", "\u{1F175}", "\u{1F176}"]
+    ]
+    
 //    override func updateViewConstraints() {
 //        super.updateViewConstraints()
 //        // Add custom view sizing constraints here
@@ -137,7 +142,7 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func loadCustomLetters() {
-        for array in customLetters {
+        for array in rectangleFillLetters {
             let s = UIStackView()
             s.axis = .horizontal
             s.distribution = .fillEqually
@@ -160,7 +165,7 @@ class KeyboardViewController: UIInputViewController {
         button.setTitle(title, for: .normal)
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium) //UIFont(name: "Montague.ttf", size: 15)
+        button.titleLabel?.font = .systemFont(ofSize: 30, weight: .medium) //UIFont(name: "Montague.ttf", size: 15)
         button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
         button.layer.cornerRadius = 4
         button.setTitleColor(UIColor.black, for: .normal)
