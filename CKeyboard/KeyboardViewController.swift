@@ -109,8 +109,10 @@ class KeyboardViewController: UIInputViewController {
         switch selectedFont {
         case .normal:
             normalLetters()
+            view.backgroundColor = .gray
         case .custom:
             loadCustomLetters()
+            view.backgroundColor = .blue.withAlphaComponent(0.3)
         }
         
         
