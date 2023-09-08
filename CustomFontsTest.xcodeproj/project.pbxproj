@@ -59,6 +59,8 @@
 		26D083F22AA69B65005B44C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26D083FC2AA8C609005B44C4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		26D083FE2AAB8520005B44C4 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
+		26D084012AAB8CED005B44C4 /* CustomFontsTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CustomFontsTest.entitlements; sourceTree = "<group>"; };
+		26D084022AAB8E0D005B44C4 /* CKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CKeyboard.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 		26D083D22AA680DC005B44C4 /* CustomFontsTest */ = {
 			isa = PBXGroup;
 			children = (
+				26D084012AAB8CED005B44C4 /* CustomFontsTest.entitlements */,
 				26D083D32AA680DC005B44C4 /* AppDelegate.swift */,
 				26D083D52AA680DC005B44C4 /* SceneDelegate.swift */,
 				26D083D72AA680DC005B44C4 /* ViewController.swift */,
@@ -116,6 +119,7 @@
 		26D083EF2AA69B65005B44C4 /* CKeyboard */ = {
 			isa = PBXGroup;
 			children = (
+				26D084022AAB8E0D005B44C4 /* CKeyboard.entitlements */,
 				26D083F02AA69B65005B44C4 /* KeyboardViewController.swift */,
 				26D083F22AA69B65005B44C4 /* Info.plist */,
 				26D083FC2AA8C609005B44C4 /* Media.xcassets */,
@@ -397,6 +401,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CustomFontsTest/CustomFontsTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;
@@ -427,6 +432,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CustomFontsTest/CustomFontsTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;
@@ -454,6 +460,7 @@
 		26D083F72AA69B65005B44C4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CKeyboard/CKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;
@@ -480,6 +487,7 @@
 		26D083F82AA69B65005B44C4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CKeyboard/CKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;

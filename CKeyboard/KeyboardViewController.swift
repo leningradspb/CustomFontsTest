@@ -98,9 +98,14 @@ class KeyboardViewController: UIInputViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         selectFontsView.addGestureRecognizer(tap)
         
-        ThemeService.shared.themChanged = { [weak self] in
-            guard let self = self else { return }
-            self.view.backgroundColor = ThemeService.shared.backgroundColor
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let text = UserDefaults(suiteName: "group.kanevsky.testkeyboard")?.value(forKey: "text1") {
+//            view.backgroundColor = ThemeService.shared.backgroundColor
+            view.backgroundColor = .blue
         }
     }
     

@@ -48,9 +48,10 @@ class ViewController: UIViewController {
     }
     
     @objc private func buttonTapped() {
-        ThemeService.shared.isSelected = true
-        ThemeService.shared.backgroundColor = .blue
-        ThemeService.shared.themChanged?()
+        
+//        ThemeService.shared.backgroundColor = .blue
+        // think about colors and images
+        UserDefaults(suiteName: "group.kanevsky.testkeyboard")?.setValue("ThemeService.shared.backgroundColor", forKey: "text1")
     }
 
 
