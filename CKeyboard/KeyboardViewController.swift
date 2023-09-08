@@ -30,7 +30,8 @@ class KeyboardViewController: UIInputViewController {
     
     let rectangleFillLetters = [
         ["\u{1F180}", "\u{1F186}", "\u{1F174}", "\u{1F181}","\u{1F183}", "\u{1F188}", "\u{1F184}", "\u{1F178}", "\u{1F17E}", "\u{1F17F}"],
-        ["\u{1F170}", "\u{1F171}", "\u{1F172}", "\u{1F173}", "\u{1F174}", "\u{1F175}", "\u{1F176}"]
+        ["\u{1F170}", "\u{1F182}", "\u{1F173}", "\u{1F175}", "\u{1F176}", "\u{1F177}", "\u{1F179}", "\u{1F17A}", "\u{1F17B}"],
+        ["\u{1F189}", "\u{1F187}", "\u{1F172}", "\u{1F185}", "\u{1F171}", "\u{1F17D}", "\u{1F17C}", "𝔸"]
     ]
     
 //    override func updateViewConstraints() {
