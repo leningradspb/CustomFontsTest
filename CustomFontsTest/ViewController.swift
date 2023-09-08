@@ -13,6 +13,7 @@ class ViewController: UIViewController {
 //    @IBOutlet weak var textField: UITextField!
 //    private let phoneField = MaskedTextField()
     private let phoneField = UITextField()
+    private let button = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,24 @@ class ViewController: UIViewController {
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
+        
+        view.addSubview(button)
+        
+        button.snp.makeConstraints {
+            $0.top.equalTo(phoneField.snp.bottom).offset(10)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(100)
+        }
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.backgroundColor = .red
+    }
+    
+    @objc private func buttonTapped() {
+        ThemeService.shared.isSelected = true
+        ThemeService.shared.backgroundColor = .blue
+        ThemeService.shared.themChanged?()
     }
 
 

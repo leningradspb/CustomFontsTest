@@ -7,11 +7,21 @@
 
 import UIKit
 
-struct ThemeService {
-    static var isSelected = false {
+class ThemeService {
+    static let shared = ThemeService()
+    
+    var themChanged: (()->())?
+    
+    init() {
+        
+    }
+    
+    var isSelected = false {
         didSet {
             backgroundColor = isSelected ? UIColor.red : UIColor.black
+            themChanged?()
         }
     }
-    static var backgroundColor = isSelected ? UIColor.red : UIColor.black
+    
+    var backgroundColor = UIColor.black
 }

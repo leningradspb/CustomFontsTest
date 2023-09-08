@@ -97,6 +97,11 @@ class KeyboardViewController: UIInputViewController {
         updateKeyboard()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         selectFontsView.addGestureRecognizer(tap)
+        
+        ThemeService.shared.themChanged = { [weak self] in
+            guard let self = self else { return }
+            self.view.backgroundColor = ThemeService.shared.backgroundColor
+        }
     }
     
     override func textWillChange(_ textInput: UITextInput?) {
@@ -127,12 +132,11 @@ class KeyboardViewController: UIInputViewController {
         switch selectedFont {
         case .normal:
             normalLetters()
-            ThemeService.isSelected = false
-            view.backgroundColor = ThemeService.backgroundColor
+//            view.backgroundColor = ThemeService.backgroundColor
         case .custom:
             loadCustomLetters()
-            ThemeService.isSelected = true
-            view.backgroundColor = ThemeService.backgroundColor
+            
+//            view.backgroundColor = ThemeService.backgroundColor
         }
         
         
