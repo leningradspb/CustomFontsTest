@@ -34,10 +34,16 @@ class KeyboardViewController: UIInputViewController {
 //        ["\u{1F189}", "\u{1F187}", "\u{1F172}", "\u{1F185}", "\u{1F171}", "\u{1F17D}", "\u{1F17C}", "𝔸"]
 //    ]
     
-    let rectangleFillLetters = [
+    let squareFillLetters = [
         ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
         ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
         ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
+    ]
+    
+    let squareLetters = [
+        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
+        ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
+        ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
     ]
     
 //    override func updateViewConstraints() {
@@ -149,7 +155,7 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func loadCustomLetters() {
-        for array in rectangleFillLetters {
+        for array in squareLetters {
             let s = UIStackView()
             s.axis = .horizontal
             s.distribution = .fillEqually
