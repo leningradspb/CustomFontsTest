@@ -127,10 +127,12 @@ class KeyboardViewController: UIInputViewController {
         switch selectedFont {
         case .normal:
             normalLetters()
-            view.backgroundColor = .gray
+            ThemeService.isSelected = false
+            view.backgroundColor = ThemeService.backgroundColor
         case .custom:
             loadCustomLetters()
-            view.backgroundColor = .blue.withAlphaComponent(0.3)
+            ThemeService.isSelected = true
+            view.backgroundColor = ThemeService.backgroundColor
         }
         
         
