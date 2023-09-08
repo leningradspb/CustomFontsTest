@@ -13,19 +13,19 @@ class KeyboardViewController: UIInputViewController {
     // вью с выбором букв
     let selectFontsView = UIView()
     var selectedFont: Fonts = .normal
-    let stack = UIStackView()
+    let mainStackView = UIStackView()
     private let imageView = UIImageView(image: UIImage(named: "grd"))
     let letterKeys = [
         ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
         ["a", "s", "d", "f", "g","h", "j", "k", "l"],
-        ["⬆️", "z", "x", "c", "v", "b", "n", "m", "⌫"],
-        ["123", "􀆪", "📝", "space", "↩"]
+        ["z", "x", "c", "v", "b", "n", "m"],
     ]
+    // ["123", "􀆪", "📝", "space", "↩"]
     
     let customLetters = [
         ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
         ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
-        ["123", "􀆪", "📝", "space", "↩"]
+        ["123", "􀆪", "space", "↩"]
     ]
     
 //    let rectangleFillLetters = [
@@ -65,9 +65,9 @@ class KeyboardViewController: UIInputViewController {
 //        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
 //        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
 //
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = 8
+        mainStackView.axis = .vertical
+        mainStackView.distribution = .fillEqually
+        mainStackView.spacing = 8
 //        let button = createButton(title: "\u{1066}")
 //        let button1 = createButton(title: "\u{1D550}")
 //        let button2 = createButton(title: "\u{1D54C}")
@@ -78,9 +78,9 @@ class KeyboardViewController: UIInputViewController {
 //
 //
         view.addSubview(selectFontsView)
-        self.view.addSubview(stack)
+        self.view.addSubview(mainStackView)
         selectFontsView.translatesAutoresizingMaskIntoConstraints = false
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
 
         selectFontsView.backgroundColor = .green
         selectFontsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
@@ -88,10 +88,10 @@ class KeyboardViewController: UIInputViewController {
         selectFontsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         selectFontsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        stack.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
-        stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        mainStackView.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
+        mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
       
         updateKeyboard()
@@ -104,8 +104,7 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let text = UserDefaults(suiteName: "group.kanevsky.testkeyboard")?.value(forKey: "text1") {
-//            view.backgroundColor = ThemeService.shared.backgroundColor
-            view.backgroundColor = .blue
+//            view.backgroundColor = .blue
         }
     }
     
@@ -130,7 +129,7 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func updateKeyboard() {
-        stack.arrangedSubviews.forEach {
+        mainStackView.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
         
@@ -156,7 +155,7 @@ class KeyboardViewController: UIInputViewController {
             s.spacing = 4
             s.translatesAutoresizingMaskIntoConstraints = false
             s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            stack.addArrangedSubview(s)
+            mainStackView.addArrangedSubview(s)
             
             array.forEach {
                 let button = createButton(title: $0)
@@ -174,7 +173,7 @@ class KeyboardViewController: UIInputViewController {
             s.spacing = 4
             s.translatesAutoresizingMaskIntoConstraints = false
             s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            stack.addArrangedSubview(s)
+            mainStackView.addArrangedSubview(s)
             
             array.forEach {
                 let button = createButton(title: $0)
