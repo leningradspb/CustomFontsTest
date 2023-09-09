@@ -12,6 +12,7 @@ class KeyboardViewController: UIInputViewController {
     // кастомные размеры для разных клавиш
     // вью с выбором букв
     let selectFontsView = UIView()
+    private let deleteBackwardButton = UIButton()
     private let numbersKey = UIView()
     private let spaceKey = UIButton()
     private let returnKey = UIButton()
@@ -182,7 +183,7 @@ class KeyboardViewController: UIInputViewController {
                 s.alignment = .fill
                 s.spacing = 4
                 s.translatesAutoresizingMaskIntoConstraints = false
-                s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+                s.heightAnchor.constraint(equalToConstant: 45).isActive = true
                 mainStackView.addArrangedSubview(s)
                 
                 // Жесткий костыль, но пока сойдет так
@@ -195,7 +196,7 @@ class KeyboardViewController: UIInputViewController {
                     let spacer = UIView()
                     spacer.backgroundColor = .clear
                     spacer.translatesAutoresizingMaskIntoConstraints = false
-                    spacer.widthAnchor.constraint(equalToConstant: 24).isActive = true
+                    spacer.widthAnchor.constraint(equalToConstant: 15).isActive = true
                     s.addArrangedSubview(spacer)
                     array.forEach {
                         let button = createButton(title: $0)
@@ -205,7 +206,7 @@ class KeyboardViewController: UIInputViewController {
                     let spacer2 = UIView()
                     spacer2.backgroundColor = .clear
                     spacer2.translatesAutoresizingMaskIntoConstraints = false
-                    spacer2.widthAnchor.constraint(equalToConstant: 20).isActive = true
+                    spacer2.widthAnchor.constraint(equalToConstant: 15).isActive = true
                     s.addArrangedSubview(spacer2)
                 } else if mainStackView.arrangedSubviews.count == 3 {
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
@@ -218,15 +219,28 @@ class KeyboardViewController: UIInputViewController {
                         s.addArrangedSubview(button)
                     }
                     
-//                    let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
-//
-//                    let largeBoldDoc = UIImage(systemName: "doc.circle.fill", withConfiguration: largeConfig)
+                    let largeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
+////
+                    let backward = UIImage(systemName: "delete.backward", withConfiguration: largeConfig)
+                    let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: largeConfig)
+                    
+                    
 
-                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
-                    deleteimageView.translatesAutoresizingMaskIntoConstraints = false
-                    deleteimageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-                    deleteimageView.backgroundColor = .gray
-                    s.addArrangedSubview(deleteimageView)
+//                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
+//                    deleteimageView.translatesAutoresizingMaskIntoConstraints = false
+                    deleteBackwardButton.tintColor = .black
+                    
+                    deleteBackwardButton.setImage(backward, for: .normal)
+                    deleteBackwardButton.setImage(backwardFill, for: .highlighted)
+                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
+                    deleteBackwardButton.backgroundColor = .gray
+                    let spacer = UIView()
+                    spacer.backgroundColor = .clear
+                    spacer.translatesAutoresizingMaskIntoConstraints = false
+                    spacer.widthAnchor.constraint(equalToConstant: 6).isActive = false
+                    
+//                    s.addArrangedSubview(spacer)
+                    s.addArrangedSubview(deleteBackwardButton)
                 }
             } // end of for each
             let spaceStack = UIStackView()
@@ -236,7 +250,7 @@ class KeyboardViewController: UIInputViewController {
             spaceStack.addArrangedSubview(returnKey)
             
             spaceStack.translatesAutoresizingMaskIntoConstraints = false
-            spaceStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            spaceStack.heightAnchor.constraint(equalToConstant: 45).isActive = true
             spaceStack.spacing = 4
             
             numbersKey.translatesAutoresizingMaskIntoConstraints = false
