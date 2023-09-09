@@ -15,18 +15,20 @@ class KeyboardViewController: UIInputViewController {
     var selectedFont: Fonts = .normal
     let mainStackView = UIStackView()
     private let imageView = UIImageView(image: UIImage(named: "grd"))
-    let letterKeys = [
-        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
-        ["z", "x", "c", "v", "b", "n", "m"],
-    ]
+    let fonts = Fonts.allCases
+    var selectedIndex = 0
+//    let letterKeys = [
+//        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+//        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
+//        ["z", "x", "c", "v", "b", "n", "m"],
+//    ]
     // ["123", "􀆪", "📝", "space", "↩"]
     
-    let customLetters = [
-        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
-        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
-        ["123", "􀆪", "space", "↩"]
-    ]
+//    let customLetters = [
+//        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
+//        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
+//        ["123", "􀆪", "space", "↩"]
+//    ]
     
 //    let rectangleFillLetters = [
 //        ["\u{1F180}", "\u{1F186}", "\u{1F174}", "\u{1F181}","\u{1F183}", "\u{1F188}", "\u{1F184}", "\u{1F178}", "\u{1F17E}", "\u{1F17F}"],
@@ -34,17 +36,17 @@ class KeyboardViewController: UIInputViewController {
 //        ["\u{1F189}", "\u{1F187}", "\u{1F172}", "\u{1F185}", "\u{1F171}", "\u{1F17D}", "\u{1F17C}", "𝔸"]
 //    ]
     
-    let squareFillLetters = [
-        ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
-        ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
-        ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
-    ]
-    
-    let squareLetters = [
-        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
-        ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
-        ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
-    ]
+//    let squareFillLetters = [
+//        ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
+//        ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
+//        ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
+//    ]
+//
+//    let squareLetters = [
+//        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
+//        ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
+//        ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
+//    ]
     
 //    override func updateViewConstraints() {
 //        super.updateViewConstraints()
@@ -122,8 +124,13 @@ class KeyboardViewController: UIInputViewController {
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         if selectedFont == .normal {
             selectedFont = .square
+            selectedIndex = 1
+        } else if selectedFont == .square {
+            selectedFont = .squareFilled
+            selectedIndex = 2
         } else {
             selectedFont = .normal
+            selectedIndex = 0
         }
         updateKeyboard()
     }
@@ -137,8 +144,11 @@ class KeyboardViewController: UIInputViewController {
         case .normal:
             normalLetters()
 //            view.backgroundColor = ThemeService.backgroundColor
-        case .square, .squareFilled:
-            loadCustomLetters()
+        case .square:
+            loadSquareLetters()
+            
+        case .squareFilled:
+            loadSquareFilledLetters()
             
 //            view.backgroundColor = ThemeService.backgroundColor
         }
@@ -147,7 +157,8 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func normalLetters() {
-        for array in  letterKeys {
+        let selectedFont = fonts[selectedIndex]
+        for array in Keyboard.init(font: selectedFont).lettersUsual {
             let s = UIStackView()
             s.axis = .horizontal
             s.distribution = .fillEqually
@@ -164,8 +175,28 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
-    private func loadCustomLetters() {
-        for array in squareLetters {
+    private func loadSquareLetters() {
+        let selectedFont = fonts[selectedIndex]
+        for array in Keyboard.init(font: selectedFont).lettersUsual {
+            let s = UIStackView()
+            s.axis = .horizontal
+            s.distribution = .fillEqually
+            s.alignment = .center
+            s.spacing = 4
+            s.translatesAutoresizingMaskIntoConstraints = false
+            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            mainStackView.addArrangedSubview(s)
+            
+            array.forEach {
+                let button = createButton(title: $0)
+                s.addArrangedSubview(button)
+            }
+        }
+    }
+    
+    private func loadSquareFilledLetters() {
+        let selectedFont = fonts[selectedIndex]
+        for array in Keyboard.init(font: selectedFont).lettersUsual {
             let s = UIStackView()
             s.axis = .horizontal
             s.distribution = .fillEqually
@@ -254,19 +285,19 @@ extension String {
     }
 }
 
-enum Fonts {
+enum Fonts: CaseIterable {
     case normal, square, squareFilled
     
-    var keyboard: [[String]] {
-        switch self {
-        case .normal:
-            return FontKeyboardContent.normalLetters
-        case .square:
-            return FontKeyboardContent.squareLetters
-        case .squareFilled:
-            return FontKeyboardContent.squareFillLetters
-        }
-    }
+//    var keyboard: Keyboard {
+//        switch self {
+//        case .normal:
+//            return FontKeyboardContent.normalLetters
+//        case .square:
+//            return FontKeyboardContent.squareLetters
+//        case .squareFilled:
+//            return FontKeyboardContent.squareFillLetters
+//        }
+//    }
 }
 
 struct FontKeyboardContent {
@@ -276,14 +307,14 @@ struct FontKeyboardContent {
         ["z", "x", "c", "v", "b", "n", "m"],
     ]
     
-    static let squareFillLetters = [
+    static let squareFilledLetters = [
          ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
          ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
          ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
      ]
      
      static let squareLetters = [
-        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿".capitalized],
+        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
          ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
          ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
      ]
@@ -292,6 +323,26 @@ struct FontKeyboardContent {
 struct Keyboard {
     let numbers: [String]?
     let additionalSymbols: [[String]]?
-    let lettersUsusal: [[String]]
+    let lettersUsual: [[String]]
     let lettersUppercased: [[String]]?
+    
+    init(font: Fonts) {
+        switch font {
+        case .normal:
+            numbers = nil
+            additionalSymbols = nil
+            lettersUsual = FontKeyboardContent.normalLetters
+            lettersUppercased = nil
+        case .square:
+            numbers = nil
+            additionalSymbols = nil
+            lettersUsual = FontKeyboardContent.squareLetters
+            lettersUppercased = nil
+        case .squareFilled:
+            numbers = nil
+            additionalSymbols = nil
+            lettersUsual = FontKeyboardContent.squareFilledLetters
+            lettersUppercased = nil
+        }
+    }
 }
