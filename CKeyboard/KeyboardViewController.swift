@@ -175,6 +175,31 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
+    private func loadKeyboardBy(font: Fonts) {
+        let selectedFont = fonts[selectedIndex]
+        let keyboard = Keyboard.init(font: selectedFont)
+        
+        let hasNumbers = keyboard.numbers != nil
+        let hasAdditionalSymbols = keyboard.additionalSymbols != nil
+        
+        for array in keyboard.lettersUsual {
+            let s = UIStackView()
+            s.axis = .horizontal
+            s.distribution = .fillEqually
+            s.alignment = .center
+            s.spacing = 4
+            s.translatesAutoresizingMaskIntoConstraints = false
+            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            mainStackView.addArrangedSubview(s)
+            
+            array.forEach {
+                let button = createButton(title: $0)
+                s.addArrangedSubview(button)
+            }
+            
+        } // end of for each
+    }
+    
     private func loadSquareLetters() {
         let selectedFont = fonts[selectedIndex]
         for array in Keyboard.init(font: selectedFont).lettersUsual {
@@ -306,6 +331,12 @@ struct FontKeyboardContent {
         ["a", "s", "d", "f", "g","h", "j", "k", "l"],
         ["z", "x", "c", "v", "b", "n", "m"],
     ]
+    static let normalAdditionalSymbols = [
+        ["-", "-", "+", "="],
+        [")", "!", "_"]
+    ]
+    
+    static let normalNumbers = ["1", "2", "1", "2", "1", "2"]
     
     static let squareFilledLetters = [
          ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
@@ -318,6 +349,8 @@ struct FontKeyboardContent {
          ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
          ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
      ]
+    
+    static let squareNumbers = ["1", "2", "1", "0"]
 }
 
 struct Keyboard {
@@ -329,12 +362,12 @@ struct Keyboard {
     init(font: Fonts) {
         switch font {
         case .normal:
-            numbers = nil
-            additionalSymbols = nil
+            numbers = FontKeyboardContent.normalNumbers
+            additionalSymbols = FontKeyboardContent.normalAdditionalSymbols
             lettersUsual = FontKeyboardContent.normalLetters
-            lettersUppercased = nil
+            lettersUppercased = nil // TODO
         case .square:
-            numbers = nil
+            numbers = FontKeyboardContent.squareNumbers
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareLetters
             lettersUppercased = nil

@@ -44,7 +44,7 @@ class ViewController: UIViewController {
         }
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.backgroundColor = .red
+        button.backgroundColor = .green.withAlphaComponent(0.5)
     }
     
     @objc private func buttonTapped() {
