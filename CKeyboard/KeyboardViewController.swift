@@ -176,17 +176,51 @@ class KeyboardViewController: UIInputViewController {
                 let s = UIStackView()
                 s.axis = .horizontal
                 s.distribution = .fillEqually
-                s.alignment = .center
+                s.alignment = .fill
                 s.spacing = 4
                 s.translatesAutoresizingMaskIntoConstraints = false
                 s.heightAnchor.constraint(equalToConstant: 40).isActive = true
                 mainStackView.addArrangedSubview(s)
                 
-                array.forEach {
-                    let button = createButton(title: $0)
-                    s.addArrangedSubview(button)
+                // Жесткий костыль, но пока сойдет так
+                if mainStackView.arrangedSubviews.count == 1 {
+                    array.forEach {
+                        let button = createButton(title: $0)
+                        s.addArrangedSubview(button)
+                    }
+                } else if mainStackView.arrangedSubviews.count == 2 {
+                    let spacer = UIView()
+                    spacer.backgroundColor = .clear
+                    spacer.translatesAutoresizingMaskIntoConstraints = false
+                    spacer.widthAnchor.constraint(equalToConstant: 24).isActive = true
+                    s.addArrangedSubview(spacer)
+                    array.forEach {
+                        let button = createButton(title: $0)
+                        s.addArrangedSubview(button)
+                    }
+                    
+                    let spacer2 = UIView()
+                    spacer2.backgroundColor = .clear
+                    spacer2.translatesAutoresizingMaskIntoConstraints = false
+                    spacer2.widthAnchor.constraint(equalToConstant: 20).isActive = true
+                    s.addArrangedSubview(spacer2)
+                } else if mainStackView.arrangedSubviews.count == 3 {
+                    let imageView = UIImageView(image: UIImage(systemName: "shift"))
+                    imageView.backgroundColor = .gray
+                    imageView.translatesAutoresizingMaskIntoConstraints = false
+                    imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+                    s.addArrangedSubview(imageView)
+                    array.forEach {
+                        let button = createButton(title: $0)
+                        s.addArrangedSubview(button)
+                    }
+                    
+                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
+                    deleteimageView.translatesAutoresizingMaskIntoConstraints = false
+                    deleteimageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+                    deleteimageView.backgroundColor = .gray
+                    s.addArrangedSubview(deleteimageView)
                 }
-                
             } // end of for each
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
     } // end loadKeyboardBy(font
