@@ -17,6 +17,7 @@ class KeyboardViewController: UIInputViewController {
     private let imageView = UIImageView(image: UIImage(named: "grd"))
     let fonts = Fonts.allCases
     var selectedIndex = 0
+    var isAdditionalSymbolsSelected = false
 //    let letterKeys = [
 //        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
 //        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
@@ -140,103 +141,76 @@ class KeyboardViewController: UIInputViewController {
             $0.removeFromSuperview()
         }
         
-        switch selectedFont {
-        case .normal:
-            normalLetters()
-//            view.backgroundColor = ThemeService.backgroundColor
-        case .square:
-            loadSquareLetters()
-            
-        case .squareFilled:
-            loadSquareFilledLetters()
-            
-//            view.backgroundColor = ThemeService.backgroundColor
-        }
-        
-        
+        loadKeyboardBy(font: selectedFont)
     }
     
-    private func normalLetters() {
-        let selectedFont = fonts[selectedIndex]
-        for array in Keyboard.init(font: selectedFont).lettersUsual {
-            let s = UIStackView()
-            s.axis = .horizontal
-            s.distribution = .fillEqually
-            s.alignment = .center
-            s.spacing = 4
-            s.translatesAutoresizingMaskIntoConstraints = false
-            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            mainStackView.addArrangedSubview(s)
-            
-            array.forEach {
-                let button = createButton(title: $0)
-                s.addArrangedSubview(button)
-            }
-        }
-    }
+//    private func normalLetters() {
+//        let selectedFont = fonts[selectedIndex]
+//        for array in Keyboard.init(font: selectedFont).lettersUsual {
+//            let s = UIStackView()
+//            s.axis = .horizontal
+//            s.distribution = .fillEqually
+//            s.alignment = .center
+//            s.spacing = 4
+//            s.translatesAutoresizingMaskIntoConstraints = false
+//            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//            mainStackView.addArrangedSubview(s)
+//
+//            array.forEach {
+//                let button = createButton(title: $0)
+//                s.addArrangedSubview(button)
+//            }
+//        }
+//    }
     
     private func loadKeyboardBy(font: Fonts) {
         let selectedFont = fonts[selectedIndex]
         let keyboard = Keyboard.init(font: selectedFont)
         
-        let hasNumbers = keyboard.numbers != nil
         let hasAdditionalSymbols = keyboard.additionalSymbols != nil
         
-        for array in keyboard.lettersUsual {
-            let s = UIStackView()
-            s.axis = .horizontal
-            s.distribution = .fillEqually
-            s.alignment = .center
-            s.spacing = 4
-            s.translatesAutoresizingMaskIntoConstraints = false
-            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            mainStackView.addArrangedSubview(s)
-            
-            array.forEach {
-                let button = createButton(title: $0)
-                s.addArrangedSubview(button)
-            }
-            
-        } // end of for each
-    }
+        if hasAdditionalSymbols && isAdditionalSymbolsSelected {
+            //TODO логика со вторым экраном с цифрами
+        } else {
+            for array in keyboard.lettersUsual {
+                let s = UIStackView()
+                s.axis = .horizontal
+                s.distribution = .fillEqually
+                s.alignment = .center
+                s.spacing = 4
+                s.translatesAutoresizingMaskIntoConstraints = false
+                s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+                mainStackView.addArrangedSubview(s)
+                
+                array.forEach {
+                    let button = createButton(title: $0)
+                    s.addArrangedSubview(button)
+                }
+                
+            } // end of for each
+        } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
+    } // end loadKeyboardBy(font
     
-    private func loadSquareLetters() {
-        let selectedFont = fonts[selectedIndex]
-        for array in Keyboard.init(font: selectedFont).lettersUsual {
-            let s = UIStackView()
-            s.axis = .horizontal
-            s.distribution = .fillEqually
-            s.alignment = .center
-            s.spacing = 4
-            s.translatesAutoresizingMaskIntoConstraints = false
-            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            mainStackView.addArrangedSubview(s)
-            
-            array.forEach {
-                let button = createButton(title: $0)
-                s.addArrangedSubview(button)
-            }
-        }
-    }
-    
-    private func loadSquareFilledLetters() {
-        let selectedFont = fonts[selectedIndex]
-        for array in Keyboard.init(font: selectedFont).lettersUsual {
-            let s = UIStackView()
-            s.axis = .horizontal
-            s.distribution = .fillEqually
-            s.alignment = .center
-            s.spacing = 4
-            s.translatesAutoresizingMaskIntoConstraints = false
-            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            mainStackView.addArrangedSubview(s)
-            
-            array.forEach {
-                let button = createButton(title: $0)
-                s.addArrangedSubview(button)
-            }
-        }
-    }
+
+//
+//    private func loadSquareFilledLetters() {
+//        let selectedFont = fonts[selectedIndex]
+//        for array in Keyboard.init(font: selectedFont).lettersUsual {
+//            let s = UIStackView()
+//            s.axis = .horizontal
+//            s.distribution = .fillEqually
+//            s.alignment = .center
+//            s.spacing = 4
+//            s.translatesAutoresizingMaskIntoConstraints = false
+//            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//            mainStackView.addArrangedSubview(s)
+//
+//            array.forEach {
+//                let button = createButton(title: $0)
+//                s.addArrangedSubview(button)
+//            }
+//        }
+//    }
     
     func createButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
@@ -332,11 +306,10 @@ struct FontKeyboardContent {
         ["z", "x", "c", "v", "b", "n", "m"],
     ]
     static let normalAdditionalSymbols = [
+        ["1", "2", "1", "2", "1", "2"],
         ["-", "-", "+", "="],
         [")", "!", "_"]
     ]
-    
-    static let normalNumbers = ["1", "2", "1", "2", "1", "2"]
     
     static let squareFilledLetters = [
          ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
@@ -349,12 +322,9 @@ struct FontKeyboardContent {
          ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
          ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
      ]
-    
-    static let squareNumbers = ["1", "2", "1", "0"]
 }
 
 struct Keyboard {
-    let numbers: [String]?
     let additionalSymbols: [[String]]?
     let lettersUsual: [[String]]
     let lettersUppercased: [[String]]?
@@ -362,17 +332,14 @@ struct Keyboard {
     init(font: Fonts) {
         switch font {
         case .normal:
-            numbers = FontKeyboardContent.normalNumbers
             additionalSymbols = FontKeyboardContent.normalAdditionalSymbols
             lettersUsual = FontKeyboardContent.normalLetters
             lettersUppercased = nil // TODO
         case .square:
-            numbers = FontKeyboardContent.squareNumbers
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareLetters
             lettersUppercased = nil
         case .squareFilled:
-            numbers = nil
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareFilledLetters
             lettersUppercased = nil
