@@ -121,7 +121,7 @@ class KeyboardViewController: UIInputViewController {
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         if selectedFont == .normal {
-            selectedFont = .custom
+            selectedFont = .square
         } else {
             selectedFont = .normal
         }
@@ -137,7 +137,7 @@ class KeyboardViewController: UIInputViewController {
         case .normal:
             normalLetters()
 //            view.backgroundColor = ThemeService.backgroundColor
-        case .custom:
+        case .square, .squareFilled:
             loadCustomLetters()
             
 //            view.backgroundColor = ThemeService.backgroundColor
@@ -255,5 +255,43 @@ extension String {
 }
 
 enum Fonts {
-    case normal, custom
+    case normal, square, squareFilled
+    
+    var keyboard: [[String]] {
+        switch self {
+        case .normal:
+            return FontKeyboardContent.normalLetters
+        case .square:
+            return FontKeyboardContent.squareLetters
+        case .squareFilled:
+            return FontKeyboardContent.squareFillLetters
+        }
+    }
+}
+
+struct FontKeyboardContent {
+    static let normalLetters = [
+        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
+        ["z", "x", "c", "v", "b", "n", "m"],
+    ]
+    
+    static let squareFillLetters = [
+         ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
+         ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
+         ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
+     ]
+     
+     static let squareLetters = [
+        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿".capitalized],
+         ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
+         ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
+     ]
+}
+
+struct Keyboard {
+    let numbers: [String]?
+    let additionalSymbols: [[String]]?
+    let lettersUsusal: [[String]]
+    let lettersUppercased: [[String]]?
 }
