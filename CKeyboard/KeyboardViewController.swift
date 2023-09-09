@@ -12,6 +12,9 @@ class KeyboardViewController: UIInputViewController {
     // кастомные размеры для разных клавиш
     // вью с выбором букв
     let selectFontsView = UIView()
+    private let numbersKey = UIView()
+    private let spaceKey = UIButton()
+    private let returnKey = UIButton()
     var selectedFont: Fonts = .normal
     let mainStackView = UIStackView()
     private let imageView = UIImageView(image: UIImage(named: "grd"))
@@ -215,6 +218,10 @@ class KeyboardViewController: UIInputViewController {
                         s.addArrangedSubview(button)
                     }
                     
+//                    let largeConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .bold, scale: .large)
+//
+//                    let largeBoldDoc = UIImage(systemName: "doc.circle.fill", withConfiguration: largeConfig)
+
                     let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
                     deleteimageView.translatesAutoresizingMaskIntoConstraints = false
                     deleteimageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
@@ -222,6 +229,29 @@ class KeyboardViewController: UIInputViewController {
                     s.addArrangedSubview(deleteimageView)
                 }
             } // end of for each
+            let spaceStack = UIStackView()
+            spaceStack.axis = .horizontal
+            spaceStack.addArrangedSubview(numbersKey)
+            spaceStack.addArrangedSubview(spaceKey)
+            spaceStack.addArrangedSubview(returnKey)
+            
+            spaceStack.translatesAutoresizingMaskIntoConstraints = false
+            spaceStack.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            spaceStack.spacing = 4
+            
+            numbersKey.translatesAutoresizingMaskIntoConstraints = false
+            numbersKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
+            numbersKey.backgroundColor = .black
+            
+            returnKey.translatesAutoresizingMaskIntoConstraints = false
+            returnKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
+            returnKey.setTitle("return", for: .normal)
+            returnKey.setTitleColor(.black, for: .normal)
+            returnKey.backgroundColor = .white
+            
+            spaceKey.backgroundColor = .purple
+            
+            mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
     } // end loadKeyboardBy(font
     
