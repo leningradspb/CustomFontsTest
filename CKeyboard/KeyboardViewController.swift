@@ -13,6 +13,7 @@ class KeyboardViewController: UIInputViewController {
     // вью с выбором букв
     let selectFontsView = UIView()
     private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
+    private let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
     private let deleteBackwardButton = UIButton()
     private let numbersKey = UIView()
     private let spaceKey = UIButton()
@@ -28,17 +29,6 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.addSubview(imageView)
-//        imageView.setImage(UIImage(named: "grd"), for: .normal)
-//        view.backgroundColor = .red
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//
-//        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-//        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-//        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-//        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-//        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//
         setupUI()
     }
     
@@ -60,7 +50,6 @@ class KeyboardViewController: UIInputViewController {
         setupMainStackView()
         setupDeleteBackwardButton()
         setupSpaceButton()
-        
       
         updateKeyboard()
     }
@@ -87,10 +76,27 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func setupDeleteBackwardButton() {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
+        let backward = UIImage(systemName: "delete.backward", withConfiguration: imageConfig)
+        let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: imageConfig)
+        
+        deleteBackwardButton.tintColor = .black
+        deleteBackwardButton.setImage(backward, for: .normal)
+        deleteBackwardButton.setImage(backwardFill, for: .highlighted)
+        deleteBackwardButton.setBackgroundImage(lightModeGrayBackgroundImage, for: .normal)
+        deleteBackwardButton.setBackgroundImage(lightModeWhiteBackgroundImage, for: .highlighted)
+        deleteBackwardButton.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
+        deleteBackwardButton.layer.cornerRadius = 4
+        deleteBackwardButton.clipsToBounds = true
+//                    deleteBackwardButton.backgroundColor = .gray
         deleteBackwardButton.addTarget(self, action: #selector(deleteBackward), for: .touchUpInside)
     }
     
     private func setupSpaceButton() {
+        spaceKey.layer.cornerRadius = 8
+        spaceKey.setBackgroundImage(lightModeWhiteBackgroundImage, for: .normal)
+        spaceKey.setBackgroundImage(lightModeGrayBackgroundImage, for: .highlighted)
+        spaceKey.clipsToBounds = true
         spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
     }
     
@@ -113,6 +119,10 @@ class KeyboardViewController: UIInputViewController {
             $0.removeFromSuperview()
         }
         
+        shiftAndDeleteBackwardStack.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+        
         loadKeyboardBy(font: selectedFont)
     }
     
@@ -127,34 +137,27 @@ class KeyboardViewController: UIInputViewController {
         } else {
             let isMediumWeight = keyboard.isMediumWeight
             for array in keyboard.lettersUsual {
-                let s = UIStackView()
-                s.axis = .horizontal
-                s.distribution = .fillEqually
-                s.alignment = .fill
-                s.spacing = 4
-                s.translatesAutoresizingMaskIntoConstraints = false
-                s.heightAnchor.constraint(equalToConstant: 45).isActive = true
+                let rowStack = HorizontalStackView(distribution: .fillEqually, spacing: 4, alignment: .fill, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
                 
                 // Жесткий костыль, но пока сойдет так
                 if mainStackView.arrangedSubviews.count == 0 {
                     array.forEach {
                         let button = createButton(title: $0, isMediumWeight: isMediumWeight)
-                        s.addArrangedSubview(button)
+                        rowStack.addArrangedSubview(button)
                     }
-                    mainStackView.addArrangedSubview(s)
+                    mainStackView.addArrangedSubview(rowStack)
                 } else if mainStackView.arrangedSubviews.count == 1 {
                     let asdStack = HorizontalStackView(spacing: 0, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
                     asdStack.addArrangedSubview(createSpacer(space: LayoutHelper.asdStackPadding))
                     array.forEach {
                         let button = createButton(title: $0, isMediumWeight: isMediumWeight)
-                        s.addArrangedSubview(button)
+                        rowStack.addArrangedSubview(button)
                     }
-                    asdStack.addArrangedSubview(s)
+                    asdStack.addArrangedSubview(rowStack)
                     asdStack.addArrangedSubview(createSpacer(space: LayoutHelper.asdStackPadding))
                     
                     mainStackView.addArrangedSubview(asdStack)
                 } else if mainStackView.arrangedSubviews.count == 2 {
-                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
                     
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
                     imageView.backgroundColor = .gray
@@ -164,30 +167,10 @@ class KeyboardViewController: UIInputViewController {
                     
                     array.forEach {
                         let button = createButton(title: $0, isMediumWeight: isMediumWeight)
-                        s.addArrangedSubview(button)
+                        rowStack.addArrangedSubview(button)
                     }
                     
-                    let largeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
-////
-                    let backward = UIImage(systemName: "delete.backward", withConfiguration: largeConfig)
-                    let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: largeConfig)
-                    
-  
-//                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
-//                    deleteimageView.translatesAutoresizingMaskIntoConstraints = false
-                    deleteBackwardButton.tintColor = .black
-                    
-                    deleteBackwardButton.setImage(backward, for: .normal)
-                    deleteBackwardButton.setImage(backwardFill, for: .highlighted)
-                    deleteBackwardButton.setBackgroundImage(lightModeGrayBackgroundImage, for: .normal)
-                    deleteBackwardButton.setBackgroundImage(lightModeWhiteBackgroundImage, for: .highlighted)
-                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
-                    deleteBackwardButton.layer.cornerRadius = 4
-                    deleteBackwardButton.clipsToBounds = true
-//                    deleteBackwardButton.backgroundColor = .gray
-                    
-                    
-                    shiftAndDeleteBackwardStack.addArrangedSubview(s)
+                    shiftAndDeleteBackwardStack.addArrangedSubview(rowStack)
                     shiftAndDeleteBackwardStack.addArrangedSubview(deleteBackwardButton)
                     mainStackView.addArrangedSubview(shiftAndDeleteBackwardStack)
                 }
@@ -211,12 +194,6 @@ class KeyboardViewController: UIInputViewController {
             returnKey.setTitle("return", for: .normal)
             returnKey.setTitleColor(.black, for: .normal)
             returnKey.backgroundColor = .white
-            
-//            spaceKey.backgroundColor = .white
-            spaceKey.layer.cornerRadius = 8
-            spaceKey.setBackgroundImage(lightModeWhiteBackgroundImage, for: .normal)
-            spaceKey.setBackgroundImage(lightModeGrayBackgroundImage, for: .highlighted)
-            spaceKey.clipsToBounds = true
             
             mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
