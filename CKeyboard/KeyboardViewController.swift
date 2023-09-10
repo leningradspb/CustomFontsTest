@@ -22,6 +22,8 @@ class KeyboardViewController: UIInputViewController {
     let fonts = Fonts.allCases
     var selectedIndex = 0
     var isAdditionalSymbolsSelected = false
+    private let lightBackgroundImage = UIImage(named: "lightBackground")
+    private let lightBackgroundHighlightedImage = UIImage(named: "lightBackgroundHighlighted")
 
     private let asdStackPadding: CGFloat = 24
     private let keyboardRowStackHeightConstraintValue: CGFloat = 45
@@ -107,6 +109,7 @@ class KeyboardViewController: UIInputViewController {
         
         
         deleteBackwardButton.addTarget(self, action: #selector(deleteBackward), for: .touchUpInside)
+        spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
       
         updateKeyboard()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
@@ -230,11 +233,7 @@ class KeyboardViewController: UIInputViewController {
                     let backward = UIImage(systemName: "delete.backward", withConfiguration: largeConfig)
                     let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: largeConfig)
                     
-                    let lightBackgroundImage = UIImage(named: "lightBackground")
-                    let lightBackgroundHighlightedImage = UIImage(named: "lightBackgroundHighlighted")
-                    
-                    
-
+  
 //                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
 //                    deleteimageView.translatesAutoresizingMaskIntoConstraints = false
                     deleteBackwardButton.tintColor = .black
@@ -274,7 +273,11 @@ class KeyboardViewController: UIInputViewController {
             returnKey.setTitleColor(.black, for: .normal)
             returnKey.backgroundColor = .white
             
-            spaceKey.backgroundColor = .purple
+//            spaceKey.backgroundColor = .white
+            spaceKey.layer.cornerRadius = 8
+            spaceKey.setBackgroundImage(lightBackgroundHighlightedImage, for: .normal)
+            spaceKey.setBackgroundImage(lightBackgroundImage, for: .highlighted)
+            spaceKey.clipsToBounds = true
             
             mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
@@ -346,6 +349,10 @@ class KeyboardViewController: UIInputViewController {
     
     @objc private func deleteBackward() {
         textDocumentProxy.deleteBackward()
+    }
+    
+    @objc private func insertSpace() {
+        textDocumentProxy.insertText(" ")
     }
     
     private func createSpacer(space: CGFloat) -> UIView {
