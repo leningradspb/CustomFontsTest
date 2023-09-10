@@ -22,6 +22,10 @@ class KeyboardViewController: UIInputViewController {
     let fonts = Fonts.allCases
     var selectedIndex = 0
     var isAdditionalSymbolsSelected = false
+
+    private let asdStackPadding: CGFloat = 1
+    private let shiftAndDeleteBackwardSpace: CGFloat = 17
+    private let shiftAndDeleteBackwardWidth: CGFloat = 50
 //    let letterKeys = [
 //        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
 //        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
@@ -186,36 +190,35 @@ class KeyboardViewController: UIInputViewController {
                 s.spacing = 4
                 s.translatesAutoresizingMaskIntoConstraints = false
                 s.heightAnchor.constraint(equalToConstant: 45).isActive = true
-                mainStackView.addArrangedSubview(s)
                 
                 // Жесткий костыль, но пока сойдет так
-                if mainStackView.arrangedSubviews.count == 1 {
+                if mainStackView.arrangedSubviews.count == 0 {
                     array.forEach {
                         let button = createButton(title: $0)
                         s.addArrangedSubview(button)
                     }
-                } else if mainStackView.arrangedSubviews.count == 2 {
-                    let spacer = UIView()
-                    spacer.backgroundColor = .clear
-                    spacer.translatesAutoresizingMaskIntoConstraints = false
-                    spacer.widthAnchor.constraint(equalToConstant: 10).isActive = true
-                    s.addArrangedSubview(spacer)
+                    mainStackView.addArrangedSubview(s)
+                } else if mainStackView.arrangedSubviews.count == 1 {
+                    
+                    s.addArrangedSubview(createSpacer(space: asdStackPadding))
                     array.forEach {
                         let button = createButton(title: $0)
                         s.addArrangedSubview(button)
                     }
                     
-                    let spacer2 = UIView()
-                    spacer2.backgroundColor = .clear
-                    spacer2.translatesAutoresizingMaskIntoConstraints = false
-                    spacer2.widthAnchor.constraint(equalToConstant: 10).isActive = true
-                    s.addArrangedSubview(spacer2)
-                } else if mainStackView.arrangedSubviews.count == 3 {
+                    s.addArrangedSubview(createSpacer(space: asdStackPadding))
+                    mainStackView.addArrangedSubview(s)
+                } else if mainStackView.arrangedSubviews.count == 2 {
+                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: shiftAndDeleteBackwardSpace)
+                    shiftAndDeleteBackwardStack.translatesAutoresizingMaskIntoConstraints = false
+                    shiftAndDeleteBackwardStack.heightAnchor.constraint(equalToConstant: 45).isActive = true
+                    
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
                     imageView.backgroundColor = .gray
                     imageView.translatesAutoresizingMaskIntoConstraints = false
-                    imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-                    s.addArrangedSubview(imageView)
+                    imageView.widthAnchor.constraint(equalToConstant: shiftAndDeleteBackwardWidth).isActive = true
+                    shiftAndDeleteBackwardStack.addArrangedSubview(imageView)
+                    
                     array.forEach {
                         let button = createButton(title: $0)
                         s.addArrangedSubview(button)
@@ -239,17 +242,15 @@ class KeyboardViewController: UIInputViewController {
                     deleteBackwardButton.setImage(backwardFill, for: .highlighted)
                     deleteBackwardButton.setBackgroundImage(lightBackgroundImage, for: .normal)
                     deleteBackwardButton.setBackgroundImage(lightBackgroundHighlightedImage, for: .highlighted)
-                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: shiftAndDeleteBackwardWidth).isActive = true
                     deleteBackwardButton.layer.cornerRadius = 4
                     deleteBackwardButton.clipsToBounds = true
 //                    deleteBackwardButton.backgroundColor = .gray
-                    let spacer = UIView()
-                    spacer.backgroundColor = .clear
-                    spacer.translatesAutoresizingMaskIntoConstraints = false
-                    spacer.widthAnchor.constraint(equalToConstant: 6).isActive = false
                     
-//                    s.addArrangedSubview(spacer)
-                    s.addArrangedSubview(deleteBackwardButton)
+                    
+                    shiftAndDeleteBackwardStack.addArrangedSubview(s)
+                    shiftAndDeleteBackwardStack.addArrangedSubview(deleteBackwardButton)
+                    mainStackView.addArrangedSubview(shiftAndDeleteBackwardStack)
                 }
             } // end of for each
             let spaceStack = UIStackView()
@@ -333,6 +334,14 @@ class KeyboardViewController: UIInputViewController {
     
     @objc private func deleteBackward() {
         textDocumentProxy.deleteBackward()
+    }
+    
+    private func createSpacer(space: CGFloat) -> UIView {
+        let spacer = UIView()
+        spacer.backgroundColor = .clear
+        spacer.translatesAutoresizingMaskIntoConstraints = false
+        spacer.widthAnchor.constraint(equalToConstant: space).isActive = true
+        return spacer
     }
     
     func setFontFamily(fontFamily: String, forView view: UIView, andSubViews isSubViews: Bool) {
@@ -435,5 +444,34 @@ struct Keyboard {
             lettersUsual = FontKeyboardContent.squareFilledLetters
             lettersUppercased = nil
         }
+    }
+}
+
+
+final class VerticalStackView: UIStackView {
+    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
+        super.init(frame: .zero)
+        axis = .vertical
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+final class HorizontalStackView: UIStackView {
+    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
+        super.init(frame: .zero)
+        axis = .horizontal
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
