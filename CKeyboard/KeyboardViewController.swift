@@ -25,11 +25,6 @@ class KeyboardViewController: UIInputViewController {
     private let lightModeWhiteBackgroundImage = UIImage(named: "lightModeWhiteBackground")
     private let lightModeGrayBackgroundImage = UIImage(named: "lightModeGrayBackground")
 
-    private let asdStackPadding: CGFloat = 24
-    private let keyboardRowStackHeightConstraintValue: CGFloat = 45
-    private let shiftAndDeleteBackwardSpace: CGFloat = 17
-    private let shiftAndDeleteBackwardWidth: CGFloat = 50
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -148,23 +143,23 @@ class KeyboardViewController: UIInputViewController {
                     }
                     mainStackView.addArrangedSubview(s)
                 } else if mainStackView.arrangedSubviews.count == 1 {
-                    let asdStack = HorizontalStackView(spacing: 0, heightConstraintValue: keyboardRowStackHeightConstraintValue)
-                    asdStack.addArrangedSubview(createSpacer(space: asdStackPadding))
+                    let asdStack = HorizontalStackView(spacing: 0, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
+                    asdStack.addArrangedSubview(createSpacer(space: LayoutHelper.asdStackPadding))
                     array.forEach {
                         let button = createButton(title: $0, isMediumWeight: isMediumWeight)
                         s.addArrangedSubview(button)
                     }
                     asdStack.addArrangedSubview(s)
-                    asdStack.addArrangedSubview(createSpacer(space: asdStackPadding))
+                    asdStack.addArrangedSubview(createSpacer(space: LayoutHelper.asdStackPadding))
                     
                     mainStackView.addArrangedSubview(asdStack)
                 } else if mainStackView.arrangedSubviews.count == 2 {
-                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: shiftAndDeleteBackwardSpace, heightConstraintValue: keyboardRowStackHeightConstraintValue)
+                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
                     
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
                     imageView.backgroundColor = .gray
                     imageView.translatesAutoresizingMaskIntoConstraints = false
-                    imageView.widthAnchor.constraint(equalToConstant: shiftAndDeleteBackwardWidth).isActive = true
+                    imageView.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
                     shiftAndDeleteBackwardStack.addArrangedSubview(imageView)
                     
                     array.forEach {
@@ -186,7 +181,7 @@ class KeyboardViewController: UIInputViewController {
                     deleteBackwardButton.setImage(backwardFill, for: .highlighted)
                     deleteBackwardButton.setBackgroundImage(lightModeGrayBackgroundImage, for: .normal)
                     deleteBackwardButton.setBackgroundImage(lightModeWhiteBackgroundImage, for: .highlighted)
-                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: shiftAndDeleteBackwardWidth).isActive = true
+                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
                     deleteBackwardButton.layer.cornerRadius = 4
                     deleteBackwardButton.clipsToBounds = true
 //                    deleteBackwardButton.backgroundColor = .gray
