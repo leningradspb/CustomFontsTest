@@ -100,6 +100,8 @@ class KeyboardViewController: UIInputViewController {
         mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         
+        
+        deleteBackwardButton.addTarget(self, action: #selector(deleteBackward), for: .touchUpInside)
       
         updateKeyboard()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
@@ -196,7 +198,7 @@ class KeyboardViewController: UIInputViewController {
                     let spacer = UIView()
                     spacer.backgroundColor = .clear
                     spacer.translatesAutoresizingMaskIntoConstraints = false
-                    spacer.widthAnchor.constraint(equalToConstant: 15).isActive = true
+                    spacer.widthAnchor.constraint(equalToConstant: 10).isActive = true
                     s.addArrangedSubview(spacer)
                     array.forEach {
                         let button = createButton(title: $0)
@@ -206,7 +208,7 @@ class KeyboardViewController: UIInputViewController {
                     let spacer2 = UIView()
                     spacer2.backgroundColor = .clear
                     spacer2.translatesAutoresizingMaskIntoConstraints = false
-                    spacer2.widthAnchor.constraint(equalToConstant: 15).isActive = true
+                    spacer2.widthAnchor.constraint(equalToConstant: 10).isActive = true
                     s.addArrangedSubview(spacer2)
                 } else if mainStackView.arrangedSubviews.count == 3 {
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
@@ -327,6 +329,10 @@ class KeyboardViewController: UIInputViewController {
 //        self.setFontFamily(fontFamily: "FagoOfficeSans-Regular", forView: self.view!, andSubViews: true)
 //        textDocumentProxy.insertText(title!)
 //        advanceToNextInputMode()
+    }
+    
+    @objc private func deleteBackward() {
+        textDocumentProxy.deleteBackward()
     }
     
     func setFontFamily(fontFamily: String, forView view: UIView, andSubViews isSubViews: Bool) {
