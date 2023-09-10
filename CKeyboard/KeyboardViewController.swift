@@ -318,6 +318,16 @@ class KeyboardViewController: UIInputViewController {
     
     @objc func didTapButton(sender: AnyObject) {
         let button = sender as! UIButton
+//       todo: anything more beautiful
+        UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut) {
+            button.titleLabel?.font = .systemFont(ofSize: 30, weight: .bold)
+        } completion: { isFinished in
+            if isFinished {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    button.titleLabel?.font = .systemFont(ofSize: 30, weight: .medium)
+                }
+            }
+        }
 //        button.titleLabel?.font =  .systemFont(ofSize: 50, weight: .bold) //UIFont(name: "Montague.ttf", size: 15)
 //        button.titleLabel?.textColor = .blue
         let title = button.title(for: .normal)
