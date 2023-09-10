@@ -18,7 +18,6 @@ class KeyboardViewController: UIInputViewController {
     private let returnKey = UIButton()
     var selectedFont: Fonts = .normal
     let mainStackView = UIStackView()
-    private let imageView = UIImageView(image: UIImage(named: "grd"))
     let fonts = Fonts.allCases
     var selectedIndex = 0
     var isAdditionalSymbolsSelected = false
@@ -29,42 +28,7 @@ class KeyboardViewController: UIInputViewController {
     private let keyboardRowStackHeightConstraintValue: CGFloat = 45
     private let shiftAndDeleteBackwardSpace: CGFloat = 17
     private let shiftAndDeleteBackwardWidth: CGFloat = 50
-//    let letterKeys = [
-//        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-//        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
-//        ["z", "x", "c", "v", "b", "n", "m"],
-//    ]
-    // ["123", "􀆪", "📝", "space", "↩"]
-    
-//    let customLetters = [
-//        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
-//        ["\u{1D54F}", "\u{1D550}", "\u{1D54C}"],
-//        ["123", "􀆪", "space", "↩"]
-//    ]
-    
-//    let rectangleFillLetters = [
-//        ["\u{1F180}", "\u{1F186}", "\u{1F174}", "\u{1F181}","\u{1F183}", "\u{1F188}", "\u{1F184}", "\u{1F178}", "\u{1F17E}", "\u{1F17F}"],
-//        ["\u{1F170}", "\u{1F182}", "\u{1F173}", "\u{1F175}", "\u{1F176}", "\u{1F177}", "\u{1F179}", "\u{1F17A}", "\u{1F17B}"],
-//        ["\u{1F189}", "\u{1F187}", "\u{1F172}", "\u{1F185}", "\u{1F171}", "\u{1F17D}", "\u{1F17C}", "𝔸"]
-//    ]
-    
-//    let squareFillLetters = [
-//        ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
-//        ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
-//        ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
-//    ]
-//
-//    let squareLetters = [
-//        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
-//        ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
-//        ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
-//    ]
-    
-//    override func updateViewConstraints() {
-//        super.updateViewConstraints()
-//        // Add custom view sizing constraints here
-//        stack.frame.size = view.frame.size
-//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,15 +46,6 @@ class KeyboardViewController: UIInputViewController {
         mainStackView.axis = .vertical
         mainStackView.distribution = .fillEqually
         mainStackView.spacing = 8
-//        let button = createButton(title: "\u{1066}")
-//        let button1 = createButton(title: "\u{1D550}")
-//        let button2 = createButton(title: "\u{1D54C}")
-//        stack.addArrangedSubview(button)
-//        stack.addArrangedSubview(button1)
-//        stack.addArrangedSubview(button2)
-        
-//
-//
         view.addSubview(selectFontsView)
         self.view.addSubview(mainStackView)
         selectFontsView.translatesAutoresizingMaskIntoConstraints = false
@@ -157,25 +112,6 @@ class KeyboardViewController: UIInputViewController {
         
         loadKeyboardBy(font: selectedFont)
     }
-    
-//    private func normalLetters() {
-//        let selectedFont = fonts[selectedIndex]
-//        for array in Keyboard.init(font: selectedFont).lettersUsual {
-//            let s = UIStackView()
-//            s.axis = .horizontal
-//            s.distribution = .fillEqually
-//            s.alignment = .center
-//            s.spacing = 4
-//            s.translatesAutoresizingMaskIntoConstraints = false
-//            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//            mainStackView.addArrangedSubview(s)
-//
-//            array.forEach {
-//                let button = createButton(title: $0)
-//                s.addArrangedSubview(button)
-//            }
-//        }
-//    }
     
     private func loadKeyboardBy(font: Fonts) {
         let selectedFont = fonts[selectedIndex]
@@ -282,28 +218,7 @@ class KeyboardViewController: UIInputViewController {
             mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
     } // end loadKeyboardBy(font
-    
-
-//
-//    private func loadSquareFilledLetters() {
-//        let selectedFont = fonts[selectedIndex]
-//        for array in Keyboard.init(font: selectedFont).lettersUsual {
-//            let s = UIStackView()
-//            s.axis = .horizontal
-//            s.distribution = .fillEqually
-//            s.alignment = .center
-//            s.spacing = 4
-//            s.translatesAutoresizingMaskIntoConstraints = false
-//            s.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//            mainStackView.addArrangedSubview(s)
-//
-//            array.forEach {
-//                let button = createButton(title: $0)
-//                s.addArrangedSubview(button)
-//            }
-//        }
-//    }
-    
+       
     func createButton(title: String, isMediumWeight: Bool) -> UIButton {
         let button = UIButton(type: .system)
 //        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
@@ -353,156 +268,5 @@ class KeyboardViewController: UIInputViewController {
     
     @objc private func insertSpace() {
         textDocumentProxy.insertText(" ")
-    }
-    
-    private func createSpacer(space: CGFloat) -> UIView {
-        let spacer = UIView()
-        spacer.backgroundColor = .clear
-        spacer.translatesAutoresizingMaskIntoConstraints = false
-        spacer.widthAnchor.constraint(equalToConstant: space).isActive = true
-        return spacer
-    }
-    
-    func setFontFamily(fontFamily: String, forView view: UIView, andSubViews isSubViews: Bool) {
-
-        if view is UILabel {
-            let lbl: UILabel = view as! UILabel
-            lbl.font = UIFont(name: fontFamily, size: lbl.font.pointSize)
-        }
-        if view is UIButton {
-            let lbl: UIButton = view as! UIButton
-            lbl.titleLabel?.font = .systemFont(ofSize: 10, weight: .thin) //UIFont(name: fontFamily, size: 12)!
-        }
-
-        if view is UITextField {
-            let lbl: UITextField = view as! UITextField
-            lbl.font = .systemFont(ofSize: 40, weight: .bold) //UIFont(name: fontFamily, size: 52)
-
-        }
-
-        if isSubViews {
-            for sview: UIView in view.subviews {
-                sview.backgroundColor = .red
-//                self.setFontFamily(fontFamily: fontFamily, forView: sview, andSubViews: true)
-            }
-        }
-    }
-}
-
-extension String {
-    func utf8DecodedString()-> String {
-        let data = self.data(using: .utf8)
-        let message = String(data: data!, encoding: .nonLossyASCII) ?? ""
-        return message
-    }
-    
-    func utf8EncodedString()-> String {
-        let messageData = self.data(using: .nonLossyASCII)
-        let text = String(data: messageData!, encoding: .utf8) ?? ""
-        return text
-    }
-}
-
-enum Fonts: CaseIterable {
-    case normal, square, squareFilled
-    
-//    var keyboard: Keyboard {
-//        switch self {
-//        case .normal:
-//            return FontKeyboardContent.normalLetters
-//        case .square:
-//            return FontKeyboardContent.squareLetters
-//        case .squareFilled:
-//            return FontKeyboardContent.squareFillLetters
-//        }
-//    }
-}
-
-struct FontKeyboardContent {
-    static let normalLetters = [
-        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-        ["a", "s", "d", "f", "g","h", "j", "k", "l"],
-        ["z", "x", "c", "v", "b", "n", "m"],
-    ]
-    static let normalAdditionalSymbols = [
-        ["1", "2", "1", "2", "1", "2"],
-        ["-", "-", "+", "="],
-        [")", "!", "_"]
-    ]
-    
-    static let squareFilledLetters = [
-         ["🆀", "🆆", "🅴", "🆁", "🆃", "🆈", "🆄", "🅸", "🅾", "🅿"],
-         ["🅰", "🆂", "🅳", "🅵", "🅶","🅷", "🅹", "🅺", "🅻"],
-         ["🆉", "🆇", "🅲", "🆅", "🅱", "🅽", "🅼"]
-     ]
-     
-     static let squareLetters = [
-        ["🅀", "🅆", "🄴", "🅁", "🅃", "🅈", "🅄", "🄸", "🄾", "🄿"],
-         ["🄰", "🅂", "🄳", "🄵", "🄶","🄷", "🄹", "🄺", "🄻"],
-         ["🅉", "🅇", "🄲", "🅅", "🄱", "🄽", "🄼"]
-     ]
-}
-
-struct Keyboard {
-    let additionalSymbols: [[String]]?
-    let lettersUsual: [[String]]
-    let lettersUppercased: [[String]]?
-    let isMediumWeight: Bool
-    
-    init(font: Fonts) {
-        switch font {
-        case .normal:
-            additionalSymbols = FontKeyboardContent.normalAdditionalSymbols
-            lettersUsual = FontKeyboardContent.normalLetters
-            lettersUppercased = nil // TODO
-            isMediumWeight = false
-        case .square:
-            additionalSymbols = nil
-            lettersUsual = FontKeyboardContent.squareLetters
-            lettersUppercased = nil
-            isMediumWeight = true
-        case .squareFilled:
-            additionalSymbols = nil
-            lettersUsual = FontKeyboardContent.squareFilledLetters
-            lettersUppercased = nil
-            isMediumWeight = true
-        }
-    }
-}
-
-
-final class VerticalStackView: UIStackView {
-    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
-        super.init(frame: .zero)
-        axis = .vertical
-        self.distribution = distribution
-        self.alignment = alignment
-        self.spacing = spacing
-//        if let constraintValue {
-//            translatesAutoresizingMaskIntoConstraints = false
-//            heightAnchor.constraint(equalToConstant: constraintValue).isActive = true
-//        }
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-final class HorizontalStackView: UIStackView {
-    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill, heightConstraintValue: CGFloat? = nil) {
-        super.init(frame: .zero)
-        axis = .horizontal
-        self.distribution = distribution
-        self.alignment = alignment
-        self.spacing = spacing
-        if let heightConstraintValue {
-            translatesAutoresizingMaskIntoConstraints = false
-            heightAnchor.constraint(equalToConstant: heightConstraintValue).isActive = true
-        }
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

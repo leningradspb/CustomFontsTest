@@ -19,6 +19,9 @@
 		26D083FD2AA8C609005B44C4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D083FC2AA8C609005B44C4 /* Media.xcassets */; };
 		26D083FF2AAB8520005B44C4 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D083FE2AAB8520005B44C4 /* ThemeService.swift */; };
 		26D084002AAB8525005B44C4 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D083FE2AAB8520005B44C4 /* ThemeService.swift */; };
+		26D084042AADA4D2005B44C4 /* FontKeyboardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D084032AADA4D2005B44C4 /* FontKeyboardContent.swift */; };
+		26D084062AADA4F7005B44C4 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D084052AADA4F7005B44C4 /* Keyboard.swift */; };
+		26D084082AADA523005B44C4 /* UIHelpersAndExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D084072AADA523005B44C4 /* UIHelpersAndExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,9 @@
 		26D083FE2AAB8520005B44C4 /* ThemeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
 		26D084012AAB8CED005B44C4 /* CustomFontsTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CustomFontsTest.entitlements; sourceTree = "<group>"; };
 		26D084022AAB8E0D005B44C4 /* CKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CKeyboard.entitlements; sourceTree = "<group>"; };
+		26D084032AADA4D2005B44C4 /* FontKeyboardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontKeyboardContent.swift; sourceTree = "<group>"; };
+		26D084052AADA4F7005B44C4 /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
+		26D084072AADA523005B44C4 /* UIHelpersAndExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpersAndExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +127,9 @@
 			children = (
 				26D084022AAB8E0D005B44C4 /* CKeyboard.entitlements */,
 				26D083F02AA69B65005B44C4 /* KeyboardViewController.swift */,
+				26D084052AADA4F7005B44C4 /* Keyboard.swift */,
+				26D084032AADA4D2005B44C4 /* FontKeyboardContent.swift */,
+				26D084072AADA523005B44C4 /* UIHelpersAndExtensions.swift */,
 				26D083F22AA69B65005B44C4 /* Info.plist */,
 				26D083FC2AA8C609005B44C4 /* Media.xcassets */,
 			);
@@ -247,6 +256,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				26D083F12AA69B65005B44C4 /* KeyboardViewController.swift in Sources */,
+				26D084042AADA4D2005B44C4 /* FontKeyboardContent.swift in Sources */,
+				26D084082AADA523005B44C4 /* UIHelpersAndExtensions.swift in Sources */,
+				26D084062AADA4F7005B44C4 /* Keyboard.swift in Sources */,
 				26D084002AAB8525005B44C4 /* ThemeService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
