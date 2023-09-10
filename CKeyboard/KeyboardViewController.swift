@@ -12,12 +12,13 @@ class KeyboardViewController: UIInputViewController {
     // кастомные размеры для разных клавиш
     // вью с выбором букв
     let selectFontsView = UIView()
+    private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
     private let deleteBackwardButton = UIButton()
     private let numbersKey = UIView()
     private let spaceKey = UIButton()
     private let returnKey = UIButton()
+    
     var selectedFont: Fonts = .normal
-    let mainStackView = UIStackView()
     let fonts = Fonts.allCases
     var selectedIndex = 0
     var isAdditionalSymbolsSelected = false
@@ -43,34 +44,7 @@ class KeyboardViewController: UIInputViewController {
 //        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
 //        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
 //
-        mainStackView.axis = .vertical
-        mainStackView.distribution = .fillEqually
-        mainStackView.spacing = 8
-        view.addSubview(selectFontsView)
-        self.view.addSubview(mainStackView)
-        selectFontsView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        selectFontsView.backgroundColor = .green
-        selectFontsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        selectFontsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        selectFontsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        selectFontsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        mainStackView.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
-        mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 4).isActive = true
-        mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4).isActive = true
-        mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        
-        
-        deleteBackwardButton.addTarget(self, action: #selector(deleteBackward), for: .touchUpInside)
-        spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
-      
-        updateKeyboard()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        selectFontsView.addGestureRecognizer(tap)
-        
-        
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,15 +54,49 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
-    override func textWillChange(_ textInput: UITextInput?) {
-        print(textInput)
-        
-       }
-    
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
         print(textInput)
         
+    }
+    
+    private func setupUI() {
+        setupSelectFontsView()
+        setupMainStackView()
+        setupDeleteBackwardButton()
+        setupSpaceButton()
+        
+      
+        updateKeyboard()
+    }
+    
+    private func setupSelectFontsView() {
+        view.addSubview(selectFontsView)
+        selectFontsView.translatesAutoresizingMaskIntoConstraints = false
+        selectFontsView.backgroundColor = .green
+        selectFontsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        selectFontsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        selectFontsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        selectFontsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        selectFontsView.addGestureRecognizer(tap)
+    }
+    
+    private func setupMainStackView() {
+        view.addSubview(mainStackView)
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        mainStackView.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
+        mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 4).isActive = true
+        mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4).isActive = true
+        mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    private func setupDeleteBackwardButton() {
+        deleteBackwardButton.addTarget(self, action: #selector(deleteBackward), for: .touchUpInside)
+    }
+    
+    private func setupSpaceButton() {
+        spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
@@ -238,12 +246,14 @@ class KeyboardViewController: UIInputViewController {
     @objc func didTapButton(sender: AnyObject) {
         let button = sender as! UIButton
 //       todo: anything more beautiful
+        let cacheFont = button.titleLabel?.font
+        
         UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut) {
-            button.titleLabel?.font = .systemFont(ofSize: 30, weight: .bold)
+            button.titleLabel?.font = .systemFont(ofSize: (cacheFont?.pointSize ?? 30) + 5, weight: .medium)
         } completion: { isFinished in
             if isFinished {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    button.titleLabel?.font = .systemFont(ofSize: 30, weight: .medium)
+                    button.titleLabel?.font = cacheFont
                 }
             }
         }
