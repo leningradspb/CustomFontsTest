@@ -18,12 +18,12 @@ class KeyboardViewController: UIInputViewController {
     private let spaceKey = UIButton()
     private let returnKey = UIButton()
     
-    var selectedFont: Fonts = .normal
-    let fonts = Fonts.allCases
-    var selectedIndex = 0
-    var isAdditionalSymbolsSelected = false
-    private let lightBackgroundImage = UIImage(named: "lightBackground")
-    private let lightBackgroundHighlightedImage = UIImage(named: "lightBackgroundHighlighted")
+    private var selectedFont: Fonts = .normal
+    private let fonts = Fonts.allCases
+    private var selectedIndex = 0
+    private var isAdditionalSymbolsSelected = false
+    private let lightModeWhiteBackgroundImage = UIImage(named: "lightModeWhiteBackground")
+    private let lightModeGrayBackgroundImage = UIImage(named: "lightModeGrayBackground")
 
     private let asdStackPadding: CGFloat = 24
     private let keyboardRowStackHeightConstraintValue: CGFloat = 45
@@ -184,8 +184,8 @@ class KeyboardViewController: UIInputViewController {
                     
                     deleteBackwardButton.setImage(backward, for: .normal)
                     deleteBackwardButton.setImage(backwardFill, for: .highlighted)
-                    deleteBackwardButton.setBackgroundImage(lightBackgroundImage, for: .normal)
-                    deleteBackwardButton.setBackgroundImage(lightBackgroundHighlightedImage, for: .highlighted)
+                    deleteBackwardButton.setBackgroundImage(lightModeGrayBackgroundImage, for: .normal)
+                    deleteBackwardButton.setBackgroundImage(lightModeWhiteBackgroundImage, for: .highlighted)
                     deleteBackwardButton.widthAnchor.constraint(equalToConstant: shiftAndDeleteBackwardWidth).isActive = true
                     deleteBackwardButton.layer.cornerRadius = 4
                     deleteBackwardButton.clipsToBounds = true
@@ -219,8 +219,8 @@ class KeyboardViewController: UIInputViewController {
             
 //            spaceKey.backgroundColor = .white
             spaceKey.layer.cornerRadius = 8
-            spaceKey.setBackgroundImage(lightBackgroundHighlightedImage, for: .normal)
-            spaceKey.setBackgroundImage(lightBackgroundImage, for: .highlighted)
+            spaceKey.setBackgroundImage(lightModeWhiteBackgroundImage, for: .normal)
+            spaceKey.setBackgroundImage(lightModeGrayBackgroundImage, for: .highlighted)
             spaceKey.clipsToBounds = true
             
             mainStackView.addArrangedSubview(spaceStack)
