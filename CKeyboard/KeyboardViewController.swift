@@ -224,6 +224,9 @@ class KeyboardViewController: UIInputViewController {
                     let backward = UIImage(systemName: "delete.backward", withConfiguration: largeConfig)
                     let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: largeConfig)
                     
+                    let lightBackgroundImage = UIImage(named: "lightBackground")
+                    let lightBackgroundHighlightedImage = UIImage(named: "lightBackgroundHighlighted")
+                    
                     
 
 //                    let deleteimageView = UIImageView(image: UIImage(systemName: "delete.backward"))
@@ -232,8 +235,12 @@ class KeyboardViewController: UIInputViewController {
                     
                     deleteBackwardButton.setImage(backward, for: .normal)
                     deleteBackwardButton.setImage(backwardFill, for: .highlighted)
-                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
-                    deleteBackwardButton.backgroundColor = .gray
+                    deleteBackwardButton.setBackgroundImage(lightBackgroundImage, for: .normal)
+                    deleteBackwardButton.setBackgroundImage(lightBackgroundHighlightedImage, for: .highlighted)
+                    deleteBackwardButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+                    deleteBackwardButton.layer.cornerRadius = 4
+                    deleteBackwardButton.clipsToBounds = true
+//                    deleteBackwardButton.backgroundColor = .gray
                     let spacer = UIView()
                     spacer.backgroundColor = .clear
                     spacer.translatesAutoresizingMaskIntoConstraints = false
