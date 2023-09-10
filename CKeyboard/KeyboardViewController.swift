@@ -183,6 +183,7 @@ class KeyboardViewController: UIInputViewController {
         if hasAdditionalSymbols && isAdditionalSymbolsSelected {
             //TODO логика со вторым экраном с цифрами
         } else {
+            let isMediumWeight = keyboard.isMediumWeight
             for array in keyboard.lettersUsual {
                 let s = UIStackView()
                 s.axis = .horizontal
@@ -195,7 +196,7 @@ class KeyboardViewController: UIInputViewController {
                 // Жесткий костыль, но пока сойдет так
                 if mainStackView.arrangedSubviews.count == 0 {
                     array.forEach {
-                        let button = createButton(title: $0)
+                        let button = createButton(title: $0, isMediumWeight: isMediumWeight)
                         s.addArrangedSubview(button)
                     }
                     mainStackView.addArrangedSubview(s)
@@ -203,7 +204,7 @@ class KeyboardViewController: UIInputViewController {
                     let asdStack = HorizontalStackView(spacing: 0, heightConstraintValue: keyboardRowStackHeightConstraintValue)
                     asdStack.addArrangedSubview(createSpacer(space: asdStackPadding))
                     array.forEach {
-                        let button = createButton(title: $0)
+                        let button = createButton(title: $0, isMediumWeight: isMediumWeight)
                         s.addArrangedSubview(button)
                     }
                     asdStack.addArrangedSubview(s)
@@ -220,7 +221,7 @@ class KeyboardViewController: UIInputViewController {
                     shiftAndDeleteBackwardStack.addArrangedSubview(imageView)
                     
                     array.forEach {
-                        let button = createButton(title: $0)
+                        let button = createButton(title: $0, isMediumWeight: isMediumWeight)
                         s.addArrangedSubview(button)
                     }
                     
@@ -300,13 +301,13 @@ class KeyboardViewController: UIInputViewController {
 //        }
 //    }
     
-    func createButton(title: String) -> UIButton {
+    func createButton(title: String, isMediumWeight: Bool) -> UIButton {
         let button = UIButton(type: .system)
 //        button.frame = CGRect(x: 0,y: 0,width: 20,height: 20)
         button.setTitle(title, for: .normal)
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = .systemFont(ofSize: 30, weight: .medium) //UIFont(name: "Montague.ttf", size: 15)
+        button.titleLabel?.font = isMediumWeight ? .systemFont(ofSize: 30, weight: .medium) : .systemFont(ofSize: 26, weight: .light) //UIFont(name: "Montague.ttf", size: 15)
         button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
         button.layer.cornerRadius = 4
         button.setTitleColor(UIColor.black, for: .normal)
@@ -439,6 +440,7 @@ struct Keyboard {
     let additionalSymbols: [[String]]?
     let lettersUsual: [[String]]
     let lettersUppercased: [[String]]?
+    let isMediumWeight: Bool
     
     init(font: Fonts) {
         switch font {
@@ -446,14 +448,17 @@ struct Keyboard {
             additionalSymbols = FontKeyboardContent.normalAdditionalSymbols
             lettersUsual = FontKeyboardContent.normalLetters
             lettersUppercased = nil // TODO
+            isMediumWeight = false
         case .square:
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareLetters
             lettersUppercased = nil
+            isMediumWeight = true
         case .squareFilled:
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareFilledLetters
             lettersUppercased = nil
+            isMediumWeight = true
         }
     }
 }
