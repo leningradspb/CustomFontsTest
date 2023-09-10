@@ -23,7 +23,8 @@ class KeyboardViewController: UIInputViewController {
     var selectedIndex = 0
     var isAdditionalSymbolsSelected = false
 
-    private let asdStackPadding: CGFloat = 1
+    private let asdStackPadding: CGFloat = 24
+    private let keyboardRowStackHeightConstraintValue: CGFloat = 45
     private let shiftAndDeleteBackwardSpace: CGFloat = 17
     private let shiftAndDeleteBackwardWidth: CGFloat = 50
 //    let letterKeys = [
@@ -199,19 +200,18 @@ class KeyboardViewController: UIInputViewController {
                     }
                     mainStackView.addArrangedSubview(s)
                 } else if mainStackView.arrangedSubviews.count == 1 {
-                    
-                    s.addArrangedSubview(createSpacer(space: asdStackPadding))
+                    let asdStack = HorizontalStackView(spacing: 0, heightConstraintValue: keyboardRowStackHeightConstraintValue)
+                    asdStack.addArrangedSubview(createSpacer(space: asdStackPadding))
                     array.forEach {
                         let button = createButton(title: $0)
                         s.addArrangedSubview(button)
                     }
+                    asdStack.addArrangedSubview(s)
+                    asdStack.addArrangedSubview(createSpacer(space: asdStackPadding))
                     
-                    s.addArrangedSubview(createSpacer(space: asdStackPadding))
-                    mainStackView.addArrangedSubview(s)
+                    mainStackView.addArrangedSubview(asdStack)
                 } else if mainStackView.arrangedSubviews.count == 2 {
-                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: shiftAndDeleteBackwardSpace)
-                    shiftAndDeleteBackwardStack.translatesAutoresizingMaskIntoConstraints = false
-                    shiftAndDeleteBackwardStack.heightAnchor.constraint(equalToConstant: 45).isActive = true
+                    let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: shiftAndDeleteBackwardSpace, heightConstraintValue: keyboardRowStackHeightConstraintValue)
                     
                     let imageView = UIImageView(image: UIImage(systemName: "shift"))
                     imageView.backgroundColor = .gray
@@ -310,6 +310,7 @@ class KeyboardViewController: UIInputViewController {
         button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
         button.layer.cornerRadius = 4
         button.setTitleColor(UIColor.black, for: .normal)
+//        button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         
         return button
@@ -455,6 +456,10 @@ final class VerticalStackView: UIStackView {
         self.distribution = distribution
         self.alignment = alignment
         self.spacing = spacing
+//        if let constraintValue {
+//            translatesAutoresizingMaskIntoConstraints = false
+//            heightAnchor.constraint(equalToConstant: constraintValue).isActive = true
+//        }
     }
     
     required init(coder: NSCoder) {
@@ -463,12 +468,16 @@ final class VerticalStackView: UIStackView {
 }
 
 final class HorizontalStackView: UIStackView {
-    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
+    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill, heightConstraintValue: CGFloat? = nil) {
         super.init(frame: .zero)
         axis = .horizontal
         self.distribution = distribution
         self.alignment = alignment
         self.spacing = spacing
+        if let heightConstraintValue {
+            translatesAutoresizingMaskIntoConstraints = false
+            heightAnchor.constraint(equalToConstant: heightConstraintValue).isActive = true
+        }
     }
     
     required init(coder: NSCoder) {
