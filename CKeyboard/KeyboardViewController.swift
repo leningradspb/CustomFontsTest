@@ -11,7 +11,7 @@ class KeyboardViewController: UIInputViewController {
     // отдельные стеки
     // кастомные размеры для разных клавиш
     // вью с выбором букв
-    let selectFontsView = UIView()
+    private let selectFontsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
     private let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
     private let deleteBackwardButton = UIButton()
@@ -20,8 +20,9 @@ class KeyboardViewController: UIInputViewController {
     private let returnKey = UIButton()
     
     private var selectedFont: Fonts = .normal
-    private let fonts = Fonts.allCases
-    private var selectedIndex = 0
+    private var keyboards: [Keyboard] = []
+    
+//    private var selectedIndex = 0
     private var isAdditionalSymbolsSelected = false
     private let lightModeWhiteBackgroundImage = UIImage(named: "lightModeWhiteBackground")
     private let lightModeGrayBackgroundImage = UIImage(named: "lightModeGrayBackground")
@@ -46,30 +47,41 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func setupUI() {
-        setupSelectFontsView()
+        setupSelectFontsCollectionView()
         setupMainStackView()
         setupDeleteBackwardButton()
         setupSpaceButton()
-      
+        loadKeyboardData()
         updateKeyboard()
     }
     
-    private func setupSelectFontsView() {
-        view.addSubview(selectFontsView)
-        selectFontsView.translatesAutoresizingMaskIntoConstraints = false
-        selectFontsView.backgroundColor = .green
-        selectFontsView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        selectFontsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        selectFontsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        selectFontsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        selectFontsView.addGestureRecognizer(tap)
+    private func setupSelectFontsCollectionView() {
+        view.addSubview(selectFontsCollectionView)
+        
+        selectFontsCollectionView.delegate = self
+        selectFontsCollectionView.dataSource = self
+        selectFontsCollectionView.backgroundColor  = .orange
+        selectFontsCollectionView.showsHorizontalScrollIndicator = false
+        selectFontsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        selectFontsCollectionView.register(FontSelectionCell.self, forCellWithReuseIdentifier: FontSelectionCell.identifier)
+        
+        if let flowLayout = selectFontsCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+//            flowLayout.minimumLineSpacing = 12
+        }
+        
+        selectFontsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        selectFontsCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        selectFontsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        selectFontsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        selectFontsCollectionView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupMainStackView() {
         view.addSubview(mainStackView)
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.topAnchor.constraint(equalTo: selectFontsView.bottomAnchor, constant: 5).isActive = true
+        mainStackView.topAnchor.constraint(equalTo: selectFontsCollectionView.bottomAnchor, constant: 5).isActive = true
         mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 4).isActive = true
         mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4).isActive = true
         mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
@@ -100,18 +112,12 @@ class KeyboardViewController: UIInputViewController {
         spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
     }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        if selectedFont == .normal {
-            selectedFont = .square
-            selectedIndex = 1
-        } else if selectedFont == .square {
-            selectedFont = .squareFilled
-            selectedIndex = 2
-        } else {
-            selectedFont = .normal
-            selectedIndex = 0
+    private func loadKeyboardData() {
+        let fonts = Fonts.allCases
+        fonts.forEach {
+            keyboards.append(Keyboard(font: $0))
         }
-        updateKeyboard()
+        selectFontsCollectionView.reloadData()
     }
     
     private func updateKeyboard() {
@@ -127,7 +133,6 @@ class KeyboardViewController: UIInputViewController {
     }
     
     private func loadKeyboardBy(font: Fonts) {
-        let selectedFont = fonts[selectedIndex]
         let keyboard = Keyboard.init(font: selectedFont)
         
         let hasAdditionalSymbols = keyboard.additionalSymbols != nil
@@ -250,5 +255,78 @@ class KeyboardViewController: UIInputViewController {
     
     @objc private func insertSpace() {
         textDocumentProxy.insertText(" ")
+    }
+}
+
+
+extension KeyboardViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        keyboards.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FontSelectionCell.identifier, for: indexPath) as! FontSelectionCell
+        let index = indexPath.row
+        if index < keyboards.count {
+            
+            cell.update(text: "FONT")
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.row)
+        selectedFont = keyboards[indexPath.row].font
+        updateKeyboard()
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+//    {
+//        return UICollectionViewFlowLayout.automaticSize
+////        return CGSize(width: 40, height: 60)
+//    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
+    {
+        return 4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
+    {
+        return 0
+    }
+    
+    
+}
+
+
+final class FontSelectionCell: UICollectionViewCell {
+    private let fontNameLabel = UILabel()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func update(text: String) {
+        fontNameLabel.text = text
+    }
+    
+    private func setupCell() {
+        contentView.layer.cornerRadius = 16
+        contentView.addSubview(fontNameLabel)
+        contentView.backgroundColor = .blue
+        fontNameLabel.textColor = .red
+        
+        fontNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6).isActive = true
+        fontNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6).isActive = true
+        fontNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6).isActive = true
+        fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6).isActive = true
     }
 }

@@ -61,3 +61,9 @@ struct LayoutHelper {
     static let shiftAndDeleteBackwardSpace: CGFloat = 17
     static let shiftAndDeleteBackwardWidth: CGFloat = 50
 }
+
+extension UICollectionReusableView {
+    static var identifier: String {
+        "\(self)"
+    }
+}
