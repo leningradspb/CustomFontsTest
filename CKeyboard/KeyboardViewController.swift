@@ -365,6 +365,7 @@ class TappableButton: UIButton {
             if isHighlighted {
                 backgroundColor = isDarkTheme ? .placeholderText : .white
             } else {
+//                UIColor(hex: "464646") systemGray6
                 backgroundColor = isDarkTheme ? UIColor(hex: "464646") : UIColor(hex: "A1A6B0")
             }
         }
