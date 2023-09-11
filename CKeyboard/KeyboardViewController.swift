@@ -211,9 +211,10 @@ class KeyboardViewController: UIInputViewController {
         button.sizeToFit()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = isMediumWeight ? .systemFont(ofSize: 30, weight: .medium) : .systemFont(ofSize: 26, weight: .light) //UIFont(name: "Montague.ttf", size: 15)
-        button.backgroundColor = .white  //UIColor(white: 1.0, alpha: 1.0)
+        // для акцентов UIColor.systemGray5 -- 6
+        button.backgroundColor = UIColor.placeholderText //UIColor.darkGray //UIColor(hex: "6D6C6C")  //.white  //UIColor(white: 1.0, alpha: 1.0)
         button.layer.cornerRadius = 4
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.setTitleColor(isDarkTheme ? .white : UIColor.black, for: .normal)
 //        button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         button.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchUpInside)
         
@@ -324,7 +325,7 @@ final class FontSelectionCell: UICollectionViewCell {
         if isTapped {
             contentView.backgroundColor = isDarkTheme ? .blue : .red  // .darkGray.withAlphaComponent(0.7)
         } else {
-            contentView.backgroundColor = isDarkTheme ? .yellow : .orange // .gray.withAlphaComponent(0.1)
+            contentView.backgroundColor = isDarkTheme ? UIColor(hex: "2B2C2B") : .orange // .gray.withAlphaComponent(0.1)
         }
     }
     
@@ -347,3 +348,7 @@ let userTheme = UIScreen.main.traitCollection.userInterfaceStyle
 var isDarkTheme: Bool {
     userTheme == .dark
 }
+
+// 2B2C2B
+// 6D6C6C
+
