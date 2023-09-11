@@ -268,7 +268,7 @@ extension KeyboardViewController: UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FontSelectionCell.identifier, for: indexPath) as! FontSelectionCell
         let index = indexPath.row
         if index < keyboards.count {
-            let text: String = keyboards[index].lettersUsual.first?.prefix(6).joined() ?? ""
+            let text: String = keyboards[index].sample  //keyboards[index].lettersUsual.first?.prefix(6).joined() ?? ""
             cell.update(text: text)
         }
         

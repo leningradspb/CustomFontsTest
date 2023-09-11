@@ -17,7 +17,7 @@ struct Keyboard {
     let lettersUppercased: [[String]]?
     let isMediumWeight: Bool
     let font: Fonts
-//    let sample: String
+    let sample: String
     
     init(font: Fonts) {
         switch font {
@@ -27,19 +27,21 @@ struct Keyboard {
             lettersUppercased = nil // TODO
             isMediumWeight = false
             self.font = font
-//            sample = 
+            sample = FontKeyboardContent.normalLettersSample
         case .square:
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareLetters
             lettersUppercased = nil
             isMediumWeight = true
             self.font = font
+            sample = FontKeyboardContent.squareLettersSample
         case .squareFilled:
             additionalSymbols = nil
             lettersUsual = FontKeyboardContent.squareFilledLetters
             lettersUppercased = nil
             isMediumWeight = true
             self.font = font
+            sample = FontKeyboardContent.squareFilledLettersSample
         }
     }
 }
