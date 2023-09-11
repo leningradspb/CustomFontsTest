@@ -322,9 +322,9 @@ final class FontSelectionCell: UICollectionViewCell {
     func update(text: String, isTapped: Bool) {
         fontNameLabel.text = text
         if isTapped {
-            contentView.backgroundColor = .darkGray.withAlphaComponent(0.7)
+            contentView.backgroundColor = isDarkTheme ? .blue : .red  // .darkGray.withAlphaComponent(0.7)
         } else {
-            contentView.backgroundColor = .gray.withAlphaComponent(0.1)
+            contentView.backgroundColor = isDarkTheme ? .yellow : .orange // .gray.withAlphaComponent(0.1)
         }
     }
     
@@ -340,4 +340,10 @@ final class FontSelectionCell: UICollectionViewCell {
         fontNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6).isActive = true
         fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6).isActive = true
     }
+}
+
+let userTheme = UIScreen.main.traitCollection.userInterfaceStyle
+
+var isDarkTheme: Bool {
+    userTheme == .dark
 }
