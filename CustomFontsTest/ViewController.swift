@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        textField.inputView = NumericKeyboard(target: textField)
-        view.backgroundColor = .white
+        view.backgroundColor = .black
 //        phoneField. = .gray
 //        phoneField.formatMask = "XXX XXX XX XX"
         phoneField.placeholder = "Type text"

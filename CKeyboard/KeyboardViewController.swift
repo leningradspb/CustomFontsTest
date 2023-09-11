@@ -14,7 +14,7 @@ class KeyboardViewController: UIInputViewController {
     private let selectFontsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
     private let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
-    private let deleteBackwardButton = UIButton()
+    private let deleteBackwardButton = TappableButton()
     private let numbersKey = UIView()
     private let spaceKey = UIButton()
     private let returnKey = UIButton()
@@ -93,13 +93,13 @@ class KeyboardViewController: UIInputViewController {
         let backward = UIImage(systemName: "delete.backward", withConfiguration: imageConfig)
         let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: imageConfig)
         
-        deleteBackwardButton.tintColor = isDarkTheme ? .white : .systemGray6
+        deleteBackwardButton.tintColor = isDarkTheme ? .white : .black
         deleteBackwardButton.setImage(backward, for: .normal)
         deleteBackwardButton.setImage(backwardFill, for: .highlighted)
-        let normalImage = isDarkTheme ? darkModeGrayBackgroundImage : lightModeGrayBackgroundImage
-        let highlightedImage = isDarkTheme ? lightModeGrayBackgroundImage : lightModeWhiteBackgroundImage
-        deleteBackwardButton.setBackgroundImage(normalImage, for: .normal)
-        deleteBackwardButton.setBackgroundImage(highlightedImage, for: .highlighted)
+//        let normalImage = isDarkTheme ? darkModeGrayBackgroundImage : lightModeGrayBackgroundImage
+//        let highlightedImage = isDarkTheme ? lightModeGrayBackgroundImage : lightModeWhiteBackgroundImage
+//        deleteBackwardButton.setBackgroundImage(normalImage, for: .normal)
+//        deleteBackwardButton.setBackgroundImage(highlightedImage, for: .highlighted)
         deleteBackwardButton.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
         deleteBackwardButton.layer.cornerRadius = 4
         deleteBackwardButton.clipsToBounds = true
@@ -357,3 +357,25 @@ var isDarkTheme: Bool {
 // 2B2C2B
 // 6D6C6C
 
+
+class TappableButton: UIButton {
+    override open var isHighlighted: Bool {
+        didSet {
+            super.isHighlighted = isHighlighted
+            if isHighlighted {
+                backgroundColor = isDarkTheme ? .placeholderText : .white
+            } else {
+                backgroundColor = isDarkTheme ? UIColor(hex: "464646") : UIColor(hex: "A1A6B0")
+            }
+        }
+    }
+    
+    init() {
+        super.init(frame: .zero)
+        isHighlighted = false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
