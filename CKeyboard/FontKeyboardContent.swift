@@ -13,6 +13,7 @@ struct FontKeyboardContent {
         ["a", "s", "d", "f", "g","h", "j", "k", "l"],
         ["z", "x", "c", "v", "b", "n", "m"],
     ]
+//    static let normalLettersSample = "sample"
     static let normalAdditionalSymbols = [
         ["1", "2", "1", "2", "1", "2"],
         ["-", "-", "+", "="],

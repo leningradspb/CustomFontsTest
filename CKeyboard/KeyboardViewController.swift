@@ -268,17 +268,21 @@ extension KeyboardViewController: UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FontSelectionCell.identifier, for: indexPath) as! FontSelectionCell
         let index = indexPath.row
         if index < keyboards.count {
-            
-            cell.update(text: "FONT")
+            let text: String = keyboards[index].lettersUsual.first?.prefix(6).joined() ?? ""
+            cell.update(text: text)
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
-        selectedFont = keyboards[indexPath.row].font
-        updateKeyboard()
+        if indexPath.row < keyboards.count {
+            let keyboard = keyboards[indexPath.row]
+            let newSelectedFont = keyboard.font
+            guard newSelectedFont != selectedFont else { return }
+            selectedFont = newSelectedFont
+            updateKeyboard()
+        }
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
