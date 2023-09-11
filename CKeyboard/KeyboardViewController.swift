@@ -39,11 +39,11 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
-//    override func textDidChange(_ textInput: UITextInput?) {
-//        super.textDidChange(textInput)
-//        print(textInput)
-//        
-//    }
+    override func textDidChange(_ textInput: UITextInput?) {
+        super.textDidChange(textInput)
+        print(textInput)
+
+    }
     
     private func setupUI() {
         setupSelectFontsView()
