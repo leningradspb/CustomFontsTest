@@ -26,6 +26,7 @@ class KeyboardViewController: UIInputViewController {
     private var isAdditionalSymbolsSelected = false
     private let lightModeWhiteBackgroundImage = UIImage(named: "lightModeWhiteBackground")
     private let lightModeGrayBackgroundImage = UIImage(named: "lightModeGrayBackground")
+    private let darkModeGrayBackgroundImage = UIImage(named: "darkModeGrayBackground")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,11 +93,13 @@ class KeyboardViewController: UIInputViewController {
         let backward = UIImage(systemName: "delete.backward", withConfiguration: imageConfig)
         let backwardFill = UIImage(systemName: "delete.backward.fill", withConfiguration: imageConfig)
         
-        deleteBackwardButton.tintColor = .black
+        deleteBackwardButton.tintColor = isDarkTheme ? .white : .systemGray6
         deleteBackwardButton.setImage(backward, for: .normal)
         deleteBackwardButton.setImage(backwardFill, for: .highlighted)
-        deleteBackwardButton.setBackgroundImage(lightModeGrayBackgroundImage, for: .normal)
-        deleteBackwardButton.setBackgroundImage(lightModeWhiteBackgroundImage, for: .highlighted)
+        let normalImage = isDarkTheme ? darkModeGrayBackgroundImage : lightModeGrayBackgroundImage
+        let highlightedImage = isDarkTheme ? lightModeGrayBackgroundImage : lightModeWhiteBackgroundImage
+        deleteBackwardButton.setBackgroundImage(normalImage, for: .normal)
+        deleteBackwardButton.setBackgroundImage(highlightedImage, for: .highlighted)
         deleteBackwardButton.widthAnchor.constraint(equalToConstant: LayoutHelper.shiftAndDeleteBackwardWidth).isActive = true
         deleteBackwardButton.layer.cornerRadius = 4
         deleteBackwardButton.clipsToBounds = true
@@ -198,7 +201,9 @@ class KeyboardViewController: UIInputViewController {
             returnKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
             returnKey.setTitle("return", for: .normal)
             returnKey.setTitleColor(.black, for: .normal)
-            returnKey.backgroundColor = .white
+            returnKey.backgroundColor = isDarkTheme ? .systemGray5 : .white
+            returnKey.layer.cornerRadius = 4
+            returnKey.clipsToBounds = true
             
             mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
@@ -212,7 +217,7 @@ class KeyboardViewController: UIInputViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = isMediumWeight ? .systemFont(ofSize: 30, weight: .medium) : .systemFont(ofSize: 26, weight: .light) //UIFont(name: "Montague.ttf", size: 15)
         // для акцентов UIColor.systemGray5 -- 6
-        button.backgroundColor = UIColor.placeholderText //UIColor.darkGray //UIColor(hex: "6D6C6C")  //.white  //UIColor(white: 1.0, alpha: 1.0)
+        button.backgroundColor = isDarkTheme ? UIColor.placeholderText : .white //UIColor.darkGray //UIColor(hex: "6D6C6C")  //.white  //UIColor(white: 1.0, alpha: 1.0)
         button.layer.cornerRadius = 4
         button.setTitleColor(isDarkTheme ? .white : UIColor.black, for: .normal)
 //        button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
