@@ -60,7 +60,7 @@ class KeyboardViewController: UIInputViewController {
         
         selectFontsCollectionView.delegate = self
         selectFontsCollectionView.dataSource = self
-        selectFontsCollectionView.backgroundColor  = .orange
+        selectFontsCollectionView.backgroundColor  = .white
         selectFontsCollectionView.showsHorizontalScrollIndicator = false
         selectFontsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         selectFontsCollectionView.register(FontSelectionCell.self, forCellWithReuseIdentifier: FontSelectionCell.identifier)
@@ -269,7 +269,8 @@ extension KeyboardViewController: UICollectionViewDelegate, UICollectionViewData
         let index = indexPath.row
         if index < keyboards.count {
             let text: String = keyboards[index].sample  //keyboards[index].lettersUsual.first?.prefix(6).joined() ?? ""
-            cell.update(text: text)
+            let isTapped = selectedFont == keyboards[index].font
+            cell.update(text: text, isTapped: isTapped)
         }
         
         return cell
@@ -282,6 +283,7 @@ extension KeyboardViewController: UICollectionViewDelegate, UICollectionViewData
             guard newSelectedFont != selectedFont else { return }
             selectedFont = newSelectedFont
             updateKeyboard()
+            collectionView.reloadData()
         }
     }
     
@@ -317,15 +319,20 @@ final class FontSelectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(text: String) {
+    func update(text: String, isTapped: Bool) {
         fontNameLabel.text = text
+        if isTapped {
+            contentView.backgroundColor = .darkGray.withAlphaComponent(0.7)
+        } else {
+            contentView.backgroundColor = .gray.withAlphaComponent(0.1)
+        }
     }
     
     private func setupCell() {
         contentView.layer.cornerRadius = 16
         contentView.addSubview(fontNameLabel)
-        contentView.backgroundColor = .blue
-        fontNameLabel.textColor = .red
+        contentView.backgroundColor = .gray.withAlphaComponent(0.1)
+        fontNameLabel.textColor = .black
         
         fontNameLabel.translatesAutoresizingMaskIntoConstraints = false
         fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6).isActive = true
