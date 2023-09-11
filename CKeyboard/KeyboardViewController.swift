@@ -39,11 +39,11 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
-    override func textDidChange(_ textInput: UITextInput?) {
-        super.textDidChange(textInput)
-        print(textInput)
-        
-    }
+//    override func textDidChange(_ textInput: UITextInput?) {
+//        super.textDidChange(textInput)
+//        print(textInput)
+//        
+//    }
     
     private func setupUI() {
         setupSelectFontsView()
@@ -137,7 +137,7 @@ class KeyboardViewController: UIInputViewController {
         } else {
             let isMediumWeight = keyboard.isMediumWeight
             for array in keyboard.lettersUsual {
-                let rowStack = HorizontalStackView(distribution: .fillEqually, spacing: 4, alignment: .fill, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
+                let rowStack = HorizontalStackView(distribution: .fillEqually, spacing: LayoutHelper.keyboardRowStackSpacing, alignment: .fill, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
                 
                 // Жесткий костыль, но пока сойдет так
                 if mainStackView.arrangedSubviews.count == 0 {

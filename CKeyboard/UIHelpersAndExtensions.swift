@@ -57,6 +57,7 @@ extension UIInputViewController {
 struct LayoutHelper {
     static let asdStackPadding: CGFloat = 24
     static let keyboardRowStackHeightConstraintValue: CGFloat = 45
+    static let keyboardRowStackSpacing: CGFloat = 6
     static let shiftAndDeleteBackwardSpace: CGFloat = 17
     static let shiftAndDeleteBackwardWidth: CGFloat = 50
 }
