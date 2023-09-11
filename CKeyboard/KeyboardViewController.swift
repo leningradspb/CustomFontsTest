@@ -8,9 +8,15 @@
 import UIKit
 
 class KeyboardViewController: UIInputViewController {
-    // отдельные стеки
-    // кастомные размеры для разных клавиш
-    // вью с выбором букв
+    // отдельные стеки ✅
+    // кастомные размеры для разных клавиш ✅
+    // вью с выбором букв ✅
+    // Выбор темы в приложении. 2 систенмные с поддержкой разного сотояния для кнопки удалить, искать и тд
+    // Кастомные клавиатуры (просто фото и прозрачные клавиши с белыми буквами) без поддержки состояний
+    // Режимы шифт и спец символы с цифрами
+    
+    // MVP 2 реализовать подписки
+    // продвижения (shorts, reels и тд) мб vk?
     private let selectFontsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
     private let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
