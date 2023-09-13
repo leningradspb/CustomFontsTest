@@ -20,10 +20,10 @@ class KeyboardViewController: UIInputViewController {
     private let selectFontsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let mainStackView = VerticalStackView(distribution: .fillEqually, spacing: 8)
     private let shiftAndDeleteBackwardStack = HorizontalStackView(spacing: LayoutHelper.shiftAndDeleteBackwardSpace, heightConstraintValue: LayoutHelper.keyboardRowStackHeightConstraintValue)
-    private let deleteBackwardButton = TappableButton()
+    private let deleteBackwardButton = HighlightedButton()
     private let numbersKey = UIView()
-    private let spaceKey = UIButton()
-    private let returnKey = UIButton()
+    private let spaceKey = HighlightedButton()
+    private let returnKey = HighlightedButton()
     
     private var selectedFont: Fonts = .normal
     private var keyboards: [Keyboard] = []
@@ -58,6 +58,8 @@ class KeyboardViewController: UIInputViewController {
         setupMainStackView()
         setupDeleteBackwardButton()
         setupSpaceButton()
+        setupReturnKey()
+        setupNumbersKey()
         loadKeyboardData()
         updateKeyboard()
     }
@@ -115,10 +117,27 @@ class KeyboardViewController: UIInputViewController {
     
     private func setupSpaceButton() {
         spaceKey.layer.cornerRadius = 8
-        spaceKey.setBackgroundImage(lightModeWhiteBackgroundImage, for: .normal)
-        spaceKey.setBackgroundImage(lightModeGrayBackgroundImage, for: .highlighted)
-        spaceKey.clipsToBounds = true
+        spaceKey.tintColor = isDarkTheme ? .white : .black
+        spaceKey.isHighlighted = false
         spaceKey.addTarget(self, action: #selector(insertSpace), for: .touchUpInside)
+    }
+    
+    private func setupReturnKey() {
+        returnKey.translatesAutoresizingMaskIntoConstraints = false
+        returnKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
+        returnKey.setTitle("return", for: .normal)
+        let titleColor: UIColor = isDarkTheme ? .white : .black
+        returnKey.setTitleColor(titleColor, for: .normal)
+        returnKey.backgroundColor = isDarkTheme ? .systemGray5 : .white
+        returnKey.layer.cornerRadius = 4
+        returnKey.clipsToBounds = true
+        returnKey.isHighlighted = false
+    }
+    
+    private func setupNumbersKey() {
+        numbersKey.translatesAutoresizingMaskIntoConstraints = false
+        numbersKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
+        numbersKey.backgroundColor = .black
     }
     
     private func loadKeyboardData() {
@@ -198,18 +217,6 @@ class KeyboardViewController: UIInputViewController {
             spaceStack.translatesAutoresizingMaskIntoConstraints = false
             spaceStack.heightAnchor.constraint(equalToConstant: 45).isActive = true
             spaceStack.spacing = 4
-            
-            numbersKey.translatesAutoresizingMaskIntoConstraints = false
-            numbersKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
-            numbersKey.backgroundColor = .black
-            
-            returnKey.translatesAutoresizingMaskIntoConstraints = false
-            returnKey.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.2).isActive = true
-            returnKey.setTitle("return", for: .normal)
-            returnKey.setTitleColor(.black, for: .normal)
-            returnKey.backgroundColor = isDarkTheme ? .systemGray5 : .white
-            returnKey.layer.cornerRadius = 4
-            returnKey.clipsToBounds = true
             
             mainStackView.addArrangedSubview(spaceStack)
         } // end hasAdditionalSymbols && isAdditionalSymbolsSelected
@@ -364,7 +371,7 @@ var isDarkTheme: Bool {
 // 6D6C6C
 
 
-class TappableButton: UIButton {
+class HighlightedButton: UIButton {
     override open var isHighlighted: Bool {
         didSet {
             super.isHighlighted = isHighlighted
