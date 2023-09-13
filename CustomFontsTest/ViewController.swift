@@ -9,49 +9,62 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-
-//    @IBOutlet weak var textField: UITextField!
-//    private let phoneField = MaskedTextField()
     private let phoneField = UITextField()
-    private let button = UIButton()
-    private var images: [UIImage] {
-        var i: [UIImage] = []
+    private let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    /// расстояние по бокам от collectionView
+    private let inset: CGFloat = 16
+    /// количество ячеек на ширину экрана (на стартовых макетах по 2)
+    private let cellCountPerWidth: CGFloat = 2
+    private let cellPadding: CGFloat = 12
+    
+    private var images: [String] {
+        var i: [String] = []
         for index in 0...19 {
-            i.append(UIImage(named: "\(index)")!)
+            i.append("\(index)")
         }
         return i
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        textField.inputView = NumericKeyboard(target: textField)
+        setupUI()
+    }
+    
+    private func setupUI() {
         view.backgroundColor = .black
-//        phoneField. = .gray
-//        phoneField.formatMask = "XXX XXX XX XX"
         phoneField.placeholder = "Type text"
-//        phoneField.inputViewController = KeyboardViewController()
-//        phoneField.textField.inputView =  NumericKeyboard(target: phoneField.textField)
+
+//        view.addSubview(phoneField)
+//
+//        phoneField.snp.makeConstraints {
+////            $0.height.equalTo(60)
+//            $0.leading.equalToSuperview()
+//            $0.trailing.equalToSuperview()
+//            $0.centerY.equalToSuperview()
+//        }
+        setupImagesCollectionView()
+    }
+    
+    private func setupImagesCollectionView() {
+        imagesCollectionView.delegate = self
+        imagesCollectionView.dataSource = self
+        imagesCollectionView.backgroundColor  = .clear
+        imagesCollectionView.showsVerticalScrollIndicator = false
+        imagesCollectionView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+//        imagesCollectionView.register(RestaurantCompilationHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: RestaurantCompilationHeader.identifier)
+        imagesCollectionView.register(ImagesCompilationCell.self, forCellWithReuseIdentifier: ImagesCompilationCell.identifier)
+//        imagesCollectionView.register(RestaurantCell.self, forCellWithReuseIdentifier: RestaurantCell.identifier)
         
-        view.addSubview(phoneField)
-        
-        phoneField.snp.makeConstraints {
-//            $0.height.equalTo(60)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.centerY.equalToSuperview()
+        if let flowLayout = imagesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .vertical
         }
         
-        view.addSubview(button)
-        
-        button.snp.makeConstraints {
-            $0.top.equalTo(phoneField.snp.bottom).offset(10)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(100)
+        view.addSubview(imagesCollectionView)
+        imagesCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-12)
         }
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.backgroundColor = .green.withAlphaComponent(0.5)
     }
     
     @objc private func buttonTapped() {
@@ -61,10 +74,116 @@ class ViewController: UIViewController {
         print(images.count)
         UserDefaults(suiteName: "group.kanevsky.testkeyboard")?.setValue("ThemeService.shared.backgroundColor", forKey: "text1")
     }
-
-
 }
 
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+{
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagesCompilationCell.identifier, for: indexPath) as? ImagesCompilationCell else { return UICollectionViewCell() }
+        
+        cell.update(with: images[indexPath.row])
+        
+        return cell
+    }
+ 
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+       
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+        let restaurantCellHeight: CGFloat = 120
+        let restaurantCellWidth: CGFloat = view.bounds.width - (inset * 2)
+        return  CGSize(width: restaurantCellWidth, height: restaurantCellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
+    {
+        return cellPadding
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
+    {
+        return cellPadding
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets
+    {
+        return UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
+    }
+}
+
+
+final class ImagesCompilationCell: UICollectionViewCell
+{
+    private let imageView = UIImageView()
+    private let gradientView = UIView()
+    private let restaurantName = UILabel()
+    private let gradientColor = UIColor(hex: "#000000")
+        
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        setupCell()
+    }
+    
+    func update(with imageName: String) {
+        imageView.image = UIImage(named: imageName)
+    }
+    
+    private func setupCell()
+    {
+        layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        addSubviews([imageView, gradientView])
+        gradientView.addSubview(restaurantName)
+        setupImageView()
+        setupGradientView()
+        setupRestaurantName()
+    }
+    
+    private func setupImageView() {
+        imageView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func setupGradientView() {
+        gradientView.snp.makeConstraints { (make) in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(bounds.height / 2.5)
+        }
+        
+        gradientView.layer.cornerRadius = 10
+//        gradientView.startColor = gradientColor.withAlphaComponent(0)
+//        gradientView.endColor = gradientColor.withAlphaComponent(0.6)
+    }
+    
+    private func setupRestaurantName() {
+        restaurantName.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-12)
+            make.leading.equalToSuperview().offset(6)
+            make.trailing.equalToSuperview().offset(-6)
+        }
+        
+        restaurantName.textAlignment = .center
+    }
+    
+    required init?(coder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 extension UIColor
 {
@@ -115,3 +234,28 @@ extension UIColor
     }
 }
 
+extension UICollectionReusableView {
+    static var identifier: String {
+        "\(self)"
+    }
+}
+
+extension UIView
+{
+    func addSubviews(_ subviews: [UIView]) {
+        subviews.forEach { self.addSubview($0) }
+    }
+    
+    func roundOnlyTopCorners(radius: CGFloat = 20) {
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
+}
+
+extension UIStackView {
+    func addArranged(subviews:[UIView]) {
+        subviews.forEach { self.addArrangedSubview($0) }
+    }
+}
