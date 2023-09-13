@@ -132,6 +132,7 @@ class KeyboardViewController: UIInputViewController {
         returnKey.layer.cornerRadius = 4
         returnKey.clipsToBounds = true
         returnKey.isHighlighted = false
+        returnKey.addTarget(self, action: #selector(returnTapped), for: .touchUpInside)
     }
     
     private func setupNumbersKey() {
@@ -274,6 +275,10 @@ class KeyboardViewController: UIInputViewController {
     
     @objc private func insertSpace() {
         textDocumentProxy.insertText(" ")
+    }
+    
+    @objc private func returnTapped() {
+        textDocumentProxy.insertText("\n")
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-    private let phoneField = UITextField()
+    private let testField = UITextField()
     private let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     /// расстояние по бокам от collectionView
     private let inset: CGFloat = 16
@@ -31,17 +31,18 @@ class ViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .black
-        phoneField.placeholder = "Type text"
+        view.backgroundColor = isDarkTheme ? .black : .white
+        testField.placeholder = "Type text"
 
-//        view.addSubview(phoneField)
-//
-//        phoneField.snp.makeConstraints {
-////            $0.height.equalTo(60)
-//            $0.leading.equalToSuperview()
-//            $0.trailing.equalToSuperview()
-//            $0.centerY.equalToSuperview()
-//        }
+        view.addSubview(testField)
+        testField.textColor = isDarkTheme ? .white : .black
+        testField.tintColor = isDarkTheme ? .white : .black
+//        testField.backgroundColor = .blue
+        testField.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
         setupImagesCollectionView()
     }
     
@@ -61,9 +62,9 @@ class ViewController: UIViewController {
         
         view.addSubview(imagesCollectionView)
         imagesCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(testField.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-12)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -102,8 +103,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         let restaurantCellHeight: CGFloat = 120
-        let restaurantCellWidth: CGFloat = view.bounds.width - (inset * 2)
-        return  CGSize(width: restaurantCellWidth, height: restaurantCellHeight)
+        let restaurantCellWidth: CGFloat = (view.bounds.width / 2) - (inset * 2)
+        return CGSize(width: restaurantCellWidth, height: restaurantCellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
@@ -258,4 +259,10 @@ extension UIStackView {
     func addArranged(subviews:[UIView]) {
         subviews.forEach { self.addArrangedSubview($0) }
     }
+}
+
+let userTheme = UIScreen.main.traitCollection.userInterfaceStyle
+
+var isDarkTheme: Bool {
+    userTheme == .dark
 }
